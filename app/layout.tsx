@@ -36,7 +36,7 @@ export function AppMenu() {
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger className="gap-1 items-center bg-gray-100 font-light">
+          <MenubarTrigger className="gap-1 items-center bg-gray-100 dark:bg-neutral-800 font-light">
             New chat
             <Icon className="ml-2">add</Icon>
           </MenubarTrigger>
@@ -57,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <link
           rel="stylesheet"
