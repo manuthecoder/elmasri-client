@@ -29,9 +29,18 @@ function EmptyContainer() {
   );
 }
 
-function Message({ from, content, hideUser, isSameUserAsPrevious }: any) {
+function Message({
+  from,
+  loading,
+  content,
+  hideUser,
+  isSameUserAsPrevious,
+}: any) {
   return (
-    <div className="flex flex-row items-end gap-2">
+    <div
+      className="flex flex-row items-end gap-2"
+      style={{ marginLeft: from === "AI" ? undefined : "auto" }}
+    >
       {hideUser ? (
         <div className="w-8 h-8 shrink-0" />
       ) : (
@@ -45,23 +54,34 @@ function Message({ from, content, hideUser, isSameUserAsPrevious }: any) {
               className="mx-auto"
             />
           ) : (
-            <Image
-              alt="ElmasriAI"
-              src="/elmasri/1.png"
-              width={150}
-              height={150}
-              className="mx-auto"
-            />
+            <></>
           )}
         </div>
       )}
       <div
         className="bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg"
-        style={{
-          borderBottomLeftRadius: !hideUser ? 0 : "1rem",
-        }}
+        style={
+          from === "AI"
+            ? {
+                borderBottomLeftRadius: !hideUser ? 0 : "1rem",
+              }
+            : {
+                borderBottomRightRadius: !hideUser ? 0 : "1rem",
+                background: "#10b981",
+              }
+        }
       >
-        <p className="text-sm">{content}</p>
+        <div className="text-sm">
+          {loading ? (
+            <div className="typing">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          ) : (
+            content
+          )}
+        </div>
       </div>
     </div>
   );
@@ -87,7 +107,7 @@ function MessageList({ messages }) {
   );
 }
 
-function SendMessage({ value, setValue, handleSubmit, setMessages }) {
+function SendMessage({ value, messages, setValue, handleSubmit }) {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -107,7 +127,11 @@ function SendMessage({ value, setValue, handleSubmit, setMessages }) {
         onChange={(e) => setValue(e.target.value)}
         placeholder="Type a message..."
       />
-      <Button className="ml-2" onClick={handleSubmit}>
+      <Button
+        className="ml-2"
+        onClick={handleSubmit}
+        disabled={Boolean(messages.find((t) => t.loading))}
+      >
         Send
         <Icon>send</Icon>
       </Button>
@@ -118,9 +142,27 @@ function SendMessage({ value, setValue, handleSubmit, setMessages }) {
 export default function Page() {
   const [value, setValue] = useState("");
 
-  const handleSubmit = () => {
-    console.log(value);
-    setValue("");
+  const handleSubmit = async () => {
+    setMessages([
+      ...messages,
+      { from: "user", content: value },
+      { from: "AI", loading: true },
+    ]);
+
+    await fetch("https://puny-liza-manuthecoder-8c4ce041.koyeb.app/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: value }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setMessages([
+          ...messages.slice(0, messages.length - 1),
+          { from: "AI", content: res.message },
+        ]);
+      });
   };
 
   const [messages, setMessages] = useState([
@@ -142,7 +184,7 @@ export default function Page() {
 
   return (
     <div className="h-screen w-screen flex flex-col max-h-full items-center justify-center">
-      <div className="w-full max-w-4xl flex flex-col h-screen py-10">
+      <div className="w-full max-w-4xl flex flex-col h-screen p-10">
         <ScrollArea className="flex-1 gap-1 flex-1 mb-2 rounded-md border p-4">
           <EmptyContainer />
           <div className="flex-1 bg-red-500" />
@@ -151,8 +193,8 @@ export default function Page() {
 
         <SendMessage
           value={value}
+          messages={messages}
           setValue={setValue}
-          setMessages={setMessages}
           handleSubmit={handleSubmit}
         />
       </div>
