@@ -24,7 +24,7 @@ Instead of just providing answers, guide students to think critically and solve 
         },
       ],
     },
-    contents: messages.map((m) => ({
+    contents: messages.map((m: any) => ({
       role: m.from === "AI" ? "model" : "user",
       parts: [{ text: m.content }],
     })),

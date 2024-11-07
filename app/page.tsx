@@ -122,10 +122,10 @@ function Message({
   );
 }
 
-function MessageList({ messages }) {
+function MessageList({ messages }: any) {
   return (
     <div className="flex flex-col flex-1 gap-2">
-      {messages.map((message, index) => (
+      {messages.map((message: any, index: any) => (
         <Message
           key={index}
           {...message}
@@ -142,7 +142,7 @@ function MessageList({ messages }) {
   );
 }
 
-function SendMessage({ value, messages, setValue, handleSubmit }) {
+function SendMessage({ value, messages, setValue, handleSubmit }: any) {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -157,7 +157,7 @@ function SendMessage({ value, messages, setValue, handleSubmit }) {
         style={{ minHeight: 10, maxHeight: 100 }}
         className="bg-neutral-50 dark:bg-neutral-950"
         rows={1}
-        ref={inputRef}
+        ref={inputRef as any}
         value={value}
         autoFocus
         onChange={(e) => setValue(e.target.value)}
@@ -172,7 +172,9 @@ function SendMessage({ value, messages, setValue, handleSubmit }) {
       <Button
         className="ml-2"
         onClick={handleSubmit}
-        disabled={Boolean(messages.find((t) => t.loading)) || !value?.trim()}
+        disabled={
+          Boolean(messages.find((t: any) => t.loading)) || !value?.trim()
+        }
       >
         Send
         <Icon>send</Icon>
