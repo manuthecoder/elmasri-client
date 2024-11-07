@@ -207,9 +207,11 @@ function AppMenu({ newChat }: any) {
     <div className="flex items-center">
       <Menubar className="shadow-lg">
         <MenubarMenu>
-          <MenubarTrigger>
-            <span style={{ fontWeight: 700 }}>ElmasriAI</span>
-            <Icon className="ml-1">expand_more</Icon>
+          <MenubarTrigger
+            style={{ paddingLeft: 5, paddingRight: 5, minWidth: 0 }}
+          >
+            <Image alt="Logo" src="/elmasri/1.png" width={24} height={24} />
+            <Icon>expand_more</Icon>
           </MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
