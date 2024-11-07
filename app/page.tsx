@@ -262,7 +262,7 @@ export default function Page() {
   ]);
 
   const scrollToBottom = () => {
-    scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current.scrollTo({ top: 99999, behavior: "smooth" });
   };
 
   const handleSubmit = async () => {
@@ -310,15 +310,17 @@ export default function Page() {
   }, [messages]);
 
   return (
-    <div className="h-screen w-screen flex flex-col max-h-full items-center justify-center">
+    <div className="h-screen flex flex-col max-h-full items-center justify-center">
       <div className="w-full max-w-4xl flex flex-col h-screen p-5">
         <AppMenu />
-        <div className="overflow-y-scroll gap-1 flex-1 my-2 rounded-md border bg-white dark:bg-neutral-950">
+        <div
+          ref={scrollRef}
+          className="overflow-y-scroll gap-1 flex-1 my-2 rounded-md border bg-white dark:bg-neutral-950"
+        >
           <div className="p-4">
             <EmptyContainer />
             <div className="flex-1 bg-red-500" />
             <MessageList messages={messages} />
-            <div ref={scrollRef} />
           </div>
         </div>
         <SendMessage
