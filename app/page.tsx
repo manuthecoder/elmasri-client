@@ -54,11 +54,12 @@ function EmptyContainer() {
 }
 
 function Message({
+  chips,
   from,
+  sendMessage,
   loading,
   content,
   hideUser,
-  isSameUserAsPrevious,
 }: any) {
   return (
     <div
@@ -94,7 +95,7 @@ function Message({
               }
             : {
                 borderBottomRightRadius: !hideUser ? 0 : "1rem",
-                background: "#2f7c57",
+                background: chips ? "transparent" : "#2f7c57",
               }
         }
       >
@@ -104,6 +105,23 @@ function Message({
               <span></span>
               <span></span>
               <span></span>
+            </div>
+          ) : chips ? (
+            <div className="flex flex-col gap-1">
+              {chips.map((chip: string) => (
+                <Button
+                  className="ml-auto text-gray-700 dark:text-white"
+                  key={chip}
+                  size="sm"
+                  variant="outline"
+                  onClick={() => sendMessage(chip)}
+                >
+                  <Icon style={{ fontSize: 20, marginBottom: -5 }}>
+                    emoji_objects
+                  </Icon>
+                  {chip}
+                </Button>
+              ))}
             </div>
           ) : (
             <div className="prose-sm">
@@ -121,19 +139,17 @@ function Message({
   );
 }
 
-function MessageList({ messages }: any) {
+function MessageList({ messages, sendMessage }: any) {
   return (
     <div className="flex flex-col flex-1 gap-2">
       {messages.map((message: any, index: any) => (
         <Message
+          sendMessage={sendMessage}
           key={index}
           {...message}
           hideUser={
             index + 1 < messages.length &&
             messages[index + 1].from === message.from
-          }
-          isSameUserAsPrevious={
-            index > 0 && messages[index - 1].from === message.from
           }
         />
       ))}
@@ -263,6 +279,13 @@ export default function Page() {
       from: "AI",
       content: "How can I help you with Physics today?",
     },
+    {
+      from: "USER",
+      chips: [
+        "Explain Circular Motion & Gravitation",
+        "Give me a AP-style practice MCQ for circular motion",
+      ],
+    },
   ];
   const [messages, setMessages] = useState<any>(defaultMessages);
 
@@ -270,11 +293,11 @@ export default function Page() {
     scrollRef.current.scrollTo({ top: 99999, behavior: "smooth" });
   };
 
-  const handleSubmit = async () => {
-    if (!value.trim()) return;
+  const handleSubmit = async (a: string) => {
+    if (!value.trim() && !a) return;
     setMessages([
       ...messages,
-      { from: "USER", content: value },
+      { from: "USER", content: a || value },
       { from: "AI", loading: true },
     ]);
 
@@ -283,14 +306,18 @@ export default function Page() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([...messages, { from: "USER", content: value }]),
+      body: JSON.stringify(
+        [...messages, { from: "USER", content: a || value }].filter(
+          (e) => !e.chips
+        )
+      ),
     })
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
         setMessages([
           ...messages,
-          { from: "USER", content: value },
+          { from: "USER", content: a || value },
           { from: "AI", content: res.message },
         ]);
       })
@@ -298,7 +325,7 @@ export default function Page() {
         console.error(err);
         setMessages([
           ...messages,
-          { from: "USER", content: value },
+          { from: "USER", content: a || value },
           {
             from: "AI",
             error: true,
@@ -329,7 +356,10 @@ export default function Page() {
           <div className="p-4">
             <EmptyContainer />
             <div className="flex-1 bg-red-500" />
-            <MessageList messages={messages} />
+            <MessageList
+              sendMessage={(a: any) => handleSubmit(a)}
+              messages={messages}
+            />
           </div>
         </div>
         <SendMessage
