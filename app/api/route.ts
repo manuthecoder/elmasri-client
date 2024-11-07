@@ -1,5 +1,13 @@
 import { NextRequest } from "next/server";
 
+export const dynamic = "force-dynamic";
+export const OPTIONS = async () => {
+  return new Response("", {
+    status: 200,
+    headers: { "Access-Control-Allow-Headers": "*" },
+  });
+};
+
 export async function POST(req: NextRequest) {
   // Get message from request body
   const messages = await req.json();
@@ -39,7 +47,7 @@ When writing formulas, ALWAYS use LaTeX formatting. Example LaTeX formatting: In
         "Content-Type": "application/json",
       },
       body: JSON.stringify(t),
-    },
+    }
   )
     .then((response) => response.json())
     .catch((error) => console.error("Error:", error));

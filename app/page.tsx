@@ -304,17 +304,22 @@ export default function Page() {
       { from: "AI", loading: true },
     ]);
 
-    await fetch(process.env.API_HOST + "/api", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(
-        [...messages, { from: "USER", content: a || value }].filter(
-          (e) => !e.chips
-        )
-      ),
-    })
+    await fetch(
+      process.env.NODE_ENV === "production"
+        ? "https://elmasri-client.vercel.app/api"
+        : "/api",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          [...messages, { from: "USER", content: a || value }].filter(
+            (e) => !e.chips
+          )
+        ),
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
