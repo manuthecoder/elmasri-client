@@ -202,7 +202,7 @@ function SendMessage({
   );
 }
 
-function AppMenu({ newChat }) {
+function AppMenu({ newChat }: any) {
   return (
     <div className="flex items-center">
       <Menubar className="shadow-lg">
@@ -248,8 +248,11 @@ function AppMenu({ newChat }) {
           </MenubarContent>
         </MenubarMenu>
 
-        <MenubarMenu onClick={newChat}>
-          <MenubarTrigger className="gap-1 items-center bg-gray-100 dark:bg-neutral-800 font-light">
+        <MenubarMenu>
+          <MenubarTrigger
+            onClick={newChat}
+            className="gap-1 items-center bg-gray-100 dark:bg-neutral-800 font-light"
+          >
             New chat
             <Icon className="ml-2">add</Icon>
           </MenubarTrigger>
