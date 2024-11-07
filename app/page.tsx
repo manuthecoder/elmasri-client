@@ -1,13 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { Icon } from "./Icon";
-import Markdown from "react-markdown";
+import { Button } from "@/components/ui/button";
 import {
   Menubar,
   MenubarContent,
@@ -17,10 +11,15 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { Textarea } from "@/components/ui/textarea";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import Markdown from "react-markdown";
+import { Icon } from "./Icon";
 
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css"; // Import the Katex CSS file
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
 
 function EmptyContainer() {
   return (
@@ -142,9 +141,13 @@ function MessageList({ messages }: any) {
   );
 }
 
-function SendMessage({ value, messages, setValue, handleSubmit }: any) {
-  const inputRef = useRef();
-
+function SendMessage({
+  inputRef,
+  value,
+  messages,
+  setValue,
+  handleSubmit,
+}: any) {
   useEffect(() => {
     const input: any = inputRef.current;
     input.style.height = "auto";
@@ -183,7 +186,7 @@ function SendMessage({ value, messages, setValue, handleSubmit }: any) {
   );
 }
 
-function AppMenu() {
+function AppMenu({ newChat }) {
   return (
     <div className="flex items-center">
       <Menubar className="shadow-lg">
@@ -229,7 +232,7 @@ function AppMenu() {
           </MenubarContent>
         </MenubarMenu>
 
-        <MenubarMenu>
+        <MenubarMenu onClick={newChat}>
           <MenubarTrigger className="gap-1 items-center bg-gray-100 dark:bg-neutral-800 font-light">
             New chat
             <Icon className="ml-2">add</Icon>
@@ -241,10 +244,11 @@ function AppMenu() {
 }
 
 export default function Page() {
+  const inputRef = useRef();
   const scrollRef: any = useRef();
 
   const [value, setValue] = useState<any>("");
-  const [messages, setMessages] = useState<any>([
+  const defaultMessages = [
     {
       from: "AI",
       content:
@@ -259,7 +263,8 @@ export default function Page() {
       from: "AI",
       content: "How can I help you with Physics today?",
     },
-  ]);
+  ];
+  const [messages, setMessages] = useState<any>(defaultMessages);
 
   const scrollToBottom = () => {
     scrollRef.current.scrollTo({ top: 99999, behavior: "smooth" });
@@ -312,7 +317,11 @@ export default function Page() {
   return (
     <div className="h-screen flex flex-col max-h-full items-center justify-center">
       <div className="w-full max-w-4xl flex flex-col h-screen p-5">
-        <AppMenu />
+        <AppMenu
+          newChat={() => {
+            setMessages(defaultMessages);
+          }}
+        />
         <div
           ref={scrollRef}
           className="overflow-y-scroll gap-1 flex-1 my-2 rounded-md border bg-white dark:bg-neutral-950"
@@ -324,6 +333,7 @@ export default function Page() {
           </div>
         </div>
         <SendMessage
+          inputRef={inputRef}
           value={value}
           messages={messages}
           setValue={setValue}
