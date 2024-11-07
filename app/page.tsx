@@ -171,7 +171,7 @@ function SendMessage({
   }, [inputRef, value]);
 
   return (
-    <div className="flex" style={{ height: 38 }}>
+    <div className="flex" style={{ minHeight: 38 }}>
       <Textarea
         style={{ minHeight: 38, maxHeight: 100 }}
         className="bg-neutral-50 dark:bg-neutral-950"
