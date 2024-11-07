@@ -301,11 +301,13 @@ export default function Page() {
 
   const handleSubmit = async (a: string) => {
     if (!value.trim() && !a) return;
-    setMessages([
-      ...messages,
-      { from: "USER", content: a || value },
-      { from: "AI", loading: true },
-    ]);
+    setMessages(
+      [
+        ...messages,
+        { from: "USER", content: a || value },
+        { from: "AI", loading: true },
+      ].filter((e) => !e.chips)
+    );
 
     await fetch(
       process.env.NODE_ENV === "production"
