@@ -76,7 +76,7 @@ function Message({
               src="/elmasri/1.png"
               width={150}
               height={150}
-              className="mx-auto"
+              className="mx-auto shrink-0"
             />
           ) : (
             <></>
