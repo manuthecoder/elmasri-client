@@ -116,7 +116,7 @@ function Message({
                   variant="outline"
                   onClick={() => sendMessage(chip)}
                 >
-                  <Icon style={{ fontSize: 20, marginBottom: -5 }}>
+                  <Icon style={{ fontSize: 20, marginBottom: -2 }}>
                     emoji_objects
                   </Icon>
                   {chip}
@@ -204,6 +204,16 @@ function SendMessage({
 }
 
 function AppMenu({ newChat, course, setCourse }: any) {
+  const [darkMode, setDarkMode] = useState(false);
+  useEffect(() => {
+    setDarkMode(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  const toggleDarkMode = () => {
+    document.documentElement.classList.toggle("dark");
+    setDarkMode(document.documentElement.classList.contains("dark"));
+  };
+
   return (
     <div className="flex items-center">
       <Menubar className="shadow-lg">
@@ -215,16 +225,9 @@ function AppMenu({ newChat, course, setCourse }: any) {
             <Icon>expand_more</Icon>
           </MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>
-              New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-            </MenubarItem>
-            <MenubarItem>
-              New Window <MenubarShortcut>⌘N</MenubarShortcut>
-            </MenubarItem>
-            <MenubarItem disabled>New Incognito Window</MenubarItem>
-            <MenubarSeparator />
-            <MenubarItem>
-              Print... <MenubarShortcut>⌘P</MenubarShortcut>
+            <MenubarItem onClick={toggleDarkMode}>
+              Dark mode
+              {darkMode && <Icon className="ml-auto">check</Icon>}
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -270,11 +273,36 @@ function AppMenu({ newChat, course, setCourse }: any) {
   );
 }
 
+const courseChips = {
+  "AP Physics 1: Algebra-Based": [
+    "How to determine the net force in a system?",
+    "What should I know for my circular motion/gravitation test?",
+    "Give me a practice problem involving circular motion & kinematics",
+  ],
+  "AP Physics C: Mechanics": [
+    "How do you solve problems involving rotational motion?",
+    "What’s the relationship between torque and angular acceleration?",
+    "Can you show a practice problem on conservation of angular momentum?",
+  ],
+  "AP Physics 2: Algebra-Based": [
+    "How does pressure change with depth in a fluid?",
+    "What’s the difference between resistors in series and parallel?",
+    "Explain Ohm's law",
+  ],
+  "AP Physics C: Electricity and Magnetism": [
+    "How do electric fields relate to potential energy?",
+    "How do I solve problems with capacitors in circuits?",
+    "Can you go over a practice problem involving Gauss’s Law?",
+  ],
+};
+
 export default function Page() {
   const inputRef = useRef();
   const scrollRef: any = useRef();
 
   const [value, setValue] = useState<any>("");
+  const [course, setCourse] = useState<any>("AP Physics 1: Algebra-Based");
+
   const defaultMessages = [
     {
       from: "AI",
@@ -292,14 +320,11 @@ export default function Page() {
     },
     {
       from: "USER",
-      chips: [
-        "Explain Circular Motion & Gravitation",
-        "Give me a AP-style practice MCQ for circular motion",
-      ],
+      chips: courseChips[course],
     },
   ];
+
   const [messages, setMessages] = useState<any>(defaultMessages);
-  const [course, setCourse] = useState<any>("AP Physics 1: Algebra-Based");
 
   const scrollToBottom = () => {
     scrollRef.current.scrollTo({ top: 99999, behavior: "smooth" });
