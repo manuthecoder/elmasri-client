@@ -301,7 +301,7 @@ export default function Page() {
       { from: "AI", loading: true },
     ]);
 
-    await fetch("/api", {
+    await fetch(process.env.API_HOST + "/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
