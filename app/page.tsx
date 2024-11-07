@@ -313,14 +313,14 @@ export default function Page() {
     <div className="h-screen w-screen flex flex-col max-h-full items-center justify-center">
       <div className="w-full max-w-4xl flex flex-col h-screen p-5">
         <AppMenu />
-        <ScrollArea className="gap-1 flex-1 my-2 rounded-md border bg-white dark:bg-neutral-950">
+        <div className="overflow-y-scroll gap-1 flex-1 my-2 rounded-md border bg-white dark:bg-neutral-950">
           <div className="p-4">
             <EmptyContainer />
             <div className="flex-1 bg-red-500" />
             <MessageList messages={messages} />
             <div ref={scrollRef} />
           </div>
-        </ScrollArea>
+        </div>
         <SendMessage
           value={value}
           messages={messages}
