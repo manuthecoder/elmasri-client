@@ -29,6 +29,10 @@ body {
             transparent 1px
         );
 }
+*::selection {
+    background-color: #2f7c57;
+    color: #fff;
+}
 
 textarea::-webkit-scrollbar {
     width: 0.5rem;
