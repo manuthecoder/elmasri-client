@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import "./typing.css";
 
@@ -67,7 +68,10 @@ export default function RootLayout({
         />
         <link rel="shortcut icon" href="/favicon.ico" />
       </head>
-      <body className={`antialiased`}>{children}</body>
+      <body className={`antialiased`}>
+        <Analytics />
+        {children}
+      </body>
     </html>
   );
 }
