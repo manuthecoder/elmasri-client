@@ -203,7 +203,7 @@ function SendMessage({
   );
 }
 
-function AppMenu({ newChat }: any) {
+function AppMenu({ newChat, course, setCourse }: any) {
   return (
     <div className="flex items-center">
       <Menubar className="shadow-lg">
@@ -231,23 +231,28 @@ function AppMenu({ newChat }: any) {
 
         <MenubarMenu>
           <MenubarTrigger>
-            AP Physics 1<Icon className="ml-1">expand_more</Icon>
+            {course.split(":")[0]}
+            <Icon className="ml-1">expand_more</Icon>
           </MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>
-              AP Physics 1: Algebra-Based <Icon className="ml-auto">check</Icon>
-            </MenubarItem>
-            <MenubarItem>AP Physics C: Mechanics</MenubarItem>
-            <MenubarItem>AP Physics 2: Algebra-Based</MenubarItem>
-
-            <MenubarItem>
-              <div className="flex flex-col">
-                AP Physics C: Electricity and Magnetism
-                <MenubarShortcut className="ml-0">
-                  Not offered @ IHS
-                </MenubarShortcut>
-              </div>
-            </MenubarItem>
+            {[
+              "AP Physics 1: Algebra-Based",
+              "AP Physics C: Mechanics",
+              "AP Physics 2: Algebra-Based",
+              "AP Physics C: Electricity and Magnetism",
+            ].map((option, i) => (
+              <MenubarItem key={option} onClick={() => setCourse(option)}>
+                <div className="flex flex-col">
+                  {option}
+                  {i === 3 && (
+                    <MenubarShortcut className="ml-0">
+                      Not offered @ IHS
+                    </MenubarShortcut>
+                  )}
+                </div>
+                {course === option && <Icon className="ml-auto">check</Icon>}
+              </MenubarItem>
+            ))}
           </MenubarContent>
         </MenubarMenu>
 
@@ -294,6 +299,7 @@ export default function Page() {
     },
   ];
   const [messages, setMessages] = useState<any>(defaultMessages);
+  const [course, setCourse] = useState<any>("AP Physics 1: Algebra-Based");
 
   const scrollToBottom = () => {
     scrollRef.current.scrollTo({ top: 99999, behavior: "smooth" });
@@ -318,11 +324,12 @@ export default function Page() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(
-          [...messages, { from: "USER", content: a || value }].filter(
+        body: JSON.stringify({
+          course,
+          messages: [...messages, { from: "USER", content: a || value }].filter(
             (e) => !e.chips
-          )
-        ),
+          ),
+        }),
       }
     )
       .then((res) => res.json())
@@ -358,6 +365,8 @@ export default function Page() {
     <div className="h-screen flex flex-col max-h-full items-center justify-center">
       <div className="w-full max-w-4xl flex flex-col h-screen p-5">
         <AppMenu
+          course={course}
+          setCourse={setCourse}
           newChat={() => {
             setMessages(defaultMessages);
           }}

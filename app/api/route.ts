@@ -10,12 +10,7 @@ export const OPTIONS = async () => {
 
 export async function POST(req: NextRequest) {
   // Get message from request body
-  const messages = await req.json();
-
-  // Message is in format [
-  // { type: "AI" | "USER", content: "..."}
-  // ]
-  //
+  const { messages, course } = await req.json();
 
   const t = {
     system_instruction: {
@@ -29,6 +24,8 @@ If students are confused, mention that you are usually available for office hour
 Provide readable, concise answers which are not too wordy. Use a friendly, approachable tone. Students find you to be a chill teacher, but not too playful.
 Instead of just providing answers, guide students to think critically and solve problems on their own.
 When writing formulas, ALWAYS use LaTeX formatting, even for just numbers. Example LaTeX formatting: Inline: "$F = ma$","$\\pi \\approx 3.14159$", "$\\pm \\, 0.2$" "$\\dfrac{x}{y}$" or Block: "$$F = ma$$"
+
+The course you will be teaching for this chat's context will be: ${course}
           `.replaceAll("\n", " "),
         },
       ],
