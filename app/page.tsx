@@ -18,6 +18,10 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css"; // Import the Katex CSS file
+
 function EmptyContainer() {
   return (
     <div className="flex flex-col items-center justify-center mb-2 gap-2 py-14">
@@ -80,7 +84,10 @@ function Message({
         </div>
       )}
       <div
-        className="bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg prose dark:prose-invert"
+        className={
+          "bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg prose prose-neutral " +
+          (from === "USER" ? "prose-invert" : "dark:prose-invert")
+        }
         style={
           from === "AI"
             ? {
@@ -101,7 +108,12 @@ function Message({
             </div>
           ) : (
             <div className="prose-sm">
-              <Markdown>{content}</Markdown>
+              <Markdown
+                remarkPlugins={[remarkMath]}
+                rehypePlugins={[rehypeKatex]}
+              >
+                {content}
+              </Markdown>
             </div>
           )}
         </div>
@@ -143,7 +155,7 @@ function SendMessage({ value, messages, setValue, handleSubmit }) {
     <div className="flex">
       <Textarea
         style={{ minHeight: 10, maxHeight: 100 }}
-        className="bg-neutral-950"
+        className="bg-neutral-50 dark:bg-neutral-950"
         rows={1}
         ref={inputRef}
         value={value}
@@ -160,7 +172,7 @@ function SendMessage({ value, messages, setValue, handleSubmit }) {
       <Button
         className="ml-2"
         onClick={handleSubmit}
-        disabled={Boolean(messages.find((t) => t.loading))}
+        disabled={Boolean(messages.find((t) => t.loading)) || !value?.trim()}
       >
         Send
         <Icon>send</Icon>
@@ -252,6 +264,7 @@ export default function Page() {
   };
 
   const handleSubmit = async () => {
+    if (!value.trim()) return;
     setMessages([
       ...messages,
       { from: "USER", content: value },
@@ -273,7 +286,19 @@ export default function Page() {
           { from: "USER", content: value },
           { from: "AI", content: res.message },
         ]);
-        scrollToBottom();
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessages([
+          ...messages,
+          { from: "USER", content: value },
+          {
+            from: "AI",
+            error: true,
+            content:
+              "Yikes! Something went wrong. Most likely, I might be in high demand, but I've reported the error to Manu. Try again later.",
+          },
+        ]);
       });
     setValue("");
   };
@@ -286,11 +311,13 @@ export default function Page() {
     <div className="h-screen w-screen flex flex-col max-h-full items-center justify-center">
       <div className="w-full max-w-4xl flex flex-col h-screen p-5">
         <AppMenu />
-        <ScrollArea className="gap-1 flex-1 my-2 rounded-md border p-4 bg-neutral-950">
-          <EmptyContainer />
-          <div className="flex-1 bg-red-500" />
-          <MessageList messages={messages} />
-          <div ref={scrollRef} />
+        <ScrollArea className="gap-1 flex-1 my-2 rounded-md border bg-white dark:bg-neutral-950">
+          <div className="p-4">
+            <EmptyContainer />
+            <div className="flex-1 bg-red-500" />
+            <MessageList messages={messages} />
+            <div ref={scrollRef} />
+          </div>
         </ScrollArea>
         <SendMessage
           value={value}
