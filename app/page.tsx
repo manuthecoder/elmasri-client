@@ -171,9 +171,9 @@ function SendMessage({
   }, [inputRef, value]);
 
   return (
-    <div className="flex">
+    <div className="flex" style={{ height: 38 }}>
       <Textarea
-        style={{ minHeight: 10, maxHeight: 100 }}
+        style={{ minHeight: 38, maxHeight: 100 }}
         className="bg-neutral-50 dark:bg-neutral-950"
         rows={1}
         ref={inputRef as any}
@@ -190,6 +190,7 @@ function SendMessage({
       />
       <Button
         className="ml-2"
+        style={{ height: 38 }}
         onClick={handleSubmit}
         disabled={
           Boolean(messages.find((t: any) => t.loading)) || !value?.trim()
