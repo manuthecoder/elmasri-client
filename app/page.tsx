@@ -183,7 +183,7 @@ function SendMessage({ value, messages, setValue, handleSubmit }: any) {
   );
 }
 
-export function AppMenu() {
+function AppMenu() {
   return (
     <div className="flex items-center">
       <Menubar className="shadow-lg">
