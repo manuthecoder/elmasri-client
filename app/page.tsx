@@ -1,5 +1,5 @@
 "use client";
-
+import { usePWAInstall } from "react-use-pwa-install";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -366,6 +366,24 @@ function SendMessage({
   );
 }
 
+function PwaInstaller() {
+  const install = usePWAInstall();
+
+  return (
+    install && (
+      <MenubarMenu>
+        <MenubarTrigger
+          onClick={install}
+          className="gap-1 items-center bg-gray-100 dark:bg-neutral-800 font-light"
+        >
+          <span className="hidden sm:flex">Install app</span>
+          <Icon className="sm:ml-2">download</Icon>
+        </MenubarTrigger>
+      </MenubarMenu>
+    )
+  );
+}
+
 function AppMenu({ newChat, course, setCourse }: any) {
   const [darkMode, setDarkMode] = useState(false);
 
@@ -455,6 +473,8 @@ function AppMenu({ newChat, course, setCourse }: any) {
             <Icon className="sm:ml-2">add</Icon>
           </MenubarTrigger>
         </MenubarMenu>
+
+        <PwaInstaller />
       </Menubar>
     </div>
   );
