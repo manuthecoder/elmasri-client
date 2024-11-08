@@ -407,6 +407,14 @@ function AppMenu({ newChat, course, setCourse }: any) {
         (!("theme" in localStorage) &&
           window.matchMedia("(prefers-color-scheme: dark)").matches)
     );
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute(
+        "content",
+        document.documentElement.classList.contains("dark")
+          ? "#0a0a0a"
+          : "#ffffff"
+      );
     setDarkMode(document.documentElement.classList.contains("dark"));
   }, []);
 
@@ -417,6 +425,14 @@ function AppMenu({ newChat, course, setCourse }: any) {
       document.documentElement.classList.contains("dark") ? "dark" : "light"
     );
     setDarkMode(document.documentElement.classList.contains("dark"));
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute(
+        "content",
+        document.documentElement.classList.contains("dark")
+          ? "#0a0a0a"
+          : "#ffffff"
+      );
   };
 
   return (
