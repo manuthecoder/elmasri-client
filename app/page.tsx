@@ -224,6 +224,7 @@ function Message({
   loading,
   content,
   hideUser,
+  course,
 }: any) {
   return (
     <div
@@ -275,7 +276,7 @@ function Message({
             </div>
           ) : chips ? (
             <div className="flex flex-col gap-1">
-              {chips.map((chip: string) => (
+              {courseChips[course].map((chip: string) => (
                 <Button
                   className="ml-auto text-gray-700 dark:text-white whitespace-normal max-w-[210px] h-auto py-2 sm:max-w-full"
                   style={{ whiteSpace: "pretty" }}
@@ -313,11 +314,12 @@ function Message({
   );
 }
 
-function MessageList({ messages, sendMessage }: any) {
+function MessageList({ messages, sendMessage, course }: any) {
   return (
     <div className="flex flex-col flex-1 gap-2">
       {messages.map((message: any, index: any) => (
         <Message
+          course={course}
           sendMessage={sendMessage}
           key={index}
           {...message}
@@ -533,7 +535,7 @@ export default function Page() {
     },
     {
       from: "USER",
-      chips: courseChips[course],
+      chips: true,
     },
   ];
 
@@ -620,6 +622,7 @@ export default function Page() {
             <EmptyContainer />
             <div className="flex-1 bg-red-500" />
             <MessageList
+              course={course}
               sendMessage={(a: any) => handleSubmit(a)}
               messages={messages}
             />
