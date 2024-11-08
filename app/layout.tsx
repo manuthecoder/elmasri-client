@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import "./typing.css";
-
 import type { Viewport } from "next";
 
 const APP_NAME = "ElmasriAI";
@@ -30,6 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: APP_NAME,
+    images: ["/og.png"],
     title: {
       default: APP_DEFAULT_TITLE,
       template: APP_TITLE_TEMPLATE,
@@ -56,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-screen overflow-hidden">
+    <html lang="en" className="h-screen overflow-hidden dark:bg-black">
       <head>
         <link
           rel="stylesheet"
@@ -75,3 +75,4 @@ export default function RootLayout({
     </html>
   );
 }
+

@@ -29,6 +29,13 @@ body {
             transparent 1px
         );
 }
+
+@media only screen and (max-width: 768px) {
+    .material-symbols-rounded.hidden {
+        display: none;
+    }
+}
+
 *::selection {
     background-color: #2f7c57;
     color: #fff;

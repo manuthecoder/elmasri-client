@@ -16,7 +16,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import { Icon } from "./Icon";
-
+import { Toaster } from "@/components/ui/toaster";
 import "katex/dist/katex.min.css"; // Import the Katex CSS file
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
@@ -69,14 +69,14 @@ function Message({
       {hideUser ? (
         <div className="w-[40px] h-8 shrink-0" />
       ) : (
-        <div className="w-[40px] h-[40px]">
+        <div className="w-[40px] h-[40px] shrink-0">
           {from === "AI" ? (
             <Image
               alt="ElmasriAI"
               src="/elmasri/1.png"
               width={150}
               height={150}
-              className="mx-auto shrink-0"
+              className="mx-auto"
             />
           ) : (
             <></>
@@ -85,7 +85,7 @@ function Message({
       )}
       <div
         className={
-          "bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg prose prose-neutral " +
+          `bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg prose prose-neutral ` +
           (from === "USER" ? "prose-invert" : "dark:prose-invert")
         }
         style={
@@ -96,6 +96,7 @@ function Message({
             : {
                 borderBottomRightRadius: !hideUser ? 0 : "1rem",
                 background: chips ? "transparent" : "#2f7c57",
+                textAlign: "right",
               }
         }
       >
@@ -110,13 +111,17 @@ function Message({
             <div className="flex flex-col gap-1">
               {chips.map((chip: string) => (
                 <Button
-                  className="ml-auto text-gray-700 dark:text-white"
+                  className="ml-auto text-gray-700 dark:text-white whitespace-normal max-w-[210px] h-auto py-2 sm:max-w-full"
+                  style={{ whiteSpace: "pretty" }}
                   key={chip}
                   size="sm"
                   variant="outline"
                   onClick={() => sendMessage(chip)}
                 >
-                  <Icon style={{ fontSize: 20, marginBottom: -2 }}>
+                  <Icon
+                    style={{ fontSize: 20, marginBottom: -2 }}
+                    className="hidden"
+                  >
                     emoji_objects
                   </Icon>
                   {chip}
@@ -205,18 +210,29 @@ function SendMessage({
 
 function AppMenu({ newChat, course, setCourse }: any) {
   const [darkMode, setDarkMode] = useState(false);
+
   useEffect(() => {
+    document.documentElement.classList.toggle(
+      "dark",
+      localStorage.getItem("theme") === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+    );
     setDarkMode(document.documentElement.classList.contains("dark"));
   }, []);
 
   const toggleDarkMode = () => {
     document.documentElement.classList.toggle("dark");
+    localStorage.setItem(
+      "theme",
+      document.documentElement.classList.contains("dark") ? "dark" : "light"
+    );
     setDarkMode(document.documentElement.classList.contains("dark"));
   };
 
   return (
     <div className="flex items-center">
-      <Menubar className="shadow-lg">
+      <Menubar>
         <MenubarMenu>
           <MenubarTrigger
             style={{ paddingLeft: 5, paddingRight: 5, minWidth: 0 }}
@@ -226,8 +242,15 @@ function AppMenu({ newChat, course, setCourse }: any) {
           </MenubarTrigger>
           <MenubarContent>
             <MenubarItem onClick={toggleDarkMode}>
+              <Icon className="mr-2">dark_mode</Icon>
               Dark mode
               {darkMode && <Icon className="ml-auto">check</Icon>}
+            </MenubarItem>
+
+            <MenubarItem onClick={() => {}}>
+              <Icon className="mr-2">info</Icon>
+              About
+              <MenubarShortcut>v0.1.0</MenubarShortcut>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -240,11 +263,17 @@ function AppMenu({ newChat, course, setCourse }: any) {
           <MenubarContent>
             {[
               "AP Physics 1: Algebra-Based",
-              "AP Physics C: Mechanics",
               "AP Physics 2: Algebra-Based",
+              "AP Physics C: Mechanics",
               "AP Physics C: Electricity and Magnetism",
             ].map((option, i) => (
-              <MenubarItem key={option} onClick={() => setCourse(option)}>
+              <MenubarItem
+                key={option}
+                onClick={() => {
+                  setCourse(option);
+                  newChat();
+                }}
+              >
                 <div className="flex flex-col">
                   {option}
                   {i === 3 && (
@@ -273,7 +302,7 @@ function AppMenu({ newChat, course, setCourse }: any) {
   );
 }
 
-const courseChips = {
+const courseChips: any = {
   "AP Physics 1: Algebra-Based": [
     "How to determine the net force in a system?",
     "What should I know for my circular motion/gravitation test?",
@@ -352,7 +381,7 @@ export default function Page() {
         body: JSON.stringify({
           course,
           messages: [...messages, { from: "USER", content: a || value }].filter(
-            (e) => !e.chips
+            (e) => !e.chips && !e.ad
           ),
         }),
       }
@@ -364,6 +393,9 @@ export default function Page() {
           ...messages,
           { from: "USER", content: a || value },
           { from: "AI", content: res.message },
+          ...(!messages.find((e: any) => e.ad) && res.ad
+            ? [{ from: "AI", ad: true, content: res.ad }]
+            : []),
         ]);
       })
       .catch((err) => {
@@ -420,3 +452,4 @@ export default function Page() {
     </div>
   );
 }
+

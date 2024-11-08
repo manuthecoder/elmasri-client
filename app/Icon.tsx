@@ -8,7 +8,7 @@ export const Icon = ({
   style?: any;
 }) => (
   <span
-    className={`${className} material-symbols-rounded`}
+    className={`material-symbols-rounded ${className}`}
     style={{ lineHeight: "15px", ...style }}
   >
     {children}
