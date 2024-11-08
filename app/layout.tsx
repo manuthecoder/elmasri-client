@@ -57,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-screen overflow-hidden dark:bg-black">
+    <html lang="en" className="h-dvh overflow-hidden dark:bg-black">
       <head>
         <link
           rel="stylesheet"

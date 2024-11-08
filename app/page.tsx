@@ -605,8 +605,8 @@ export default function Page() {
   }, [messages]);
 
   return (
-    <div className="h-screen flex flex-col max-h-full items-center justify-center">
-      <div className="w-full max-w-4xl flex flex-col h-screen p-5">
+    <div className="h-dvh flex flex-col max-h-full items-center justify-center">
+      <div className="w-full max-w-4xl flex flex-col h-dvh p-5">
         <AppMenu
           course={course}
           setCourse={setCourse}
