@@ -367,7 +367,7 @@ function SendMessage({
       <Button
         className="ml-2"
         style={{ height: 38 }}
-        onClick={handleSubmit}
+        onClick={() => handleSubmit(value)}
         disabled={
           Boolean(messages.find((t: any) => t.loading)) || !value?.trim()
         }
