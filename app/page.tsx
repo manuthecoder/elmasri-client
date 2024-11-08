@@ -452,10 +452,10 @@ export default function Page() {
         setMessages([
           ...messages,
           { from: "USER", content: a || value },
+          { from: "AI", content: res.message },
           ...(!messages.find((e: any) => e.ad)
             ? [{ from: "AI", ad: true, content: res.ad }]
             : []),
-          { from: "AI", content: res.message },
         ]);
       })
       .catch((err) => {
