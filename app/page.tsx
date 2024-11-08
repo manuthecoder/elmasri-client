@@ -239,7 +239,9 @@ function Message({
       <div
         className={
           `bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg prose prose-neutral ` +
-          (from === "USER" ? "prose-invert" : "dark:prose-invert")
+          (from === "USER"
+            ? "prose-invert text-green-100"
+            : "dark:prose-invert")
         }
         style={
           from === "AI"
@@ -492,16 +494,16 @@ export default function Page() {
     {
       from: "AI",
       content:
-        "Well, hello there. I'm Mr. Elmasri, with my essence craftfully captured through the power of Artificial Intelligence.",
+        "👋 Well, hello there. I'm Mr. Elmasri 🥸 with my essence craftfully captured through the power of Artificial Intelligence 🤖",
     },
     {
       from: "AI",
       content:
-        "Sometimes I can generate inaccurate responses, so double check! As always, please use this tool with academic integrity :)",
+        "Sometimes I can generate inaccurate responses, so double check! I'm trained on the Official CollegeBoard AP Physics Course and Exam Descriptions, Lab Manuals, and other resources. Use this tool responsibly 📚",
     },
     {
       from: "AI",
-      content: "How can I help you with Physics today?",
+      content: "How can I help you with Physics today? 🫵",
     },
     {
       from: "USER",
