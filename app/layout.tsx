@@ -7,7 +7,8 @@ import type { Viewport } from "next";
 const APP_NAME = "ElmasriAI";
 const APP_DEFAULT_TITLE = "ElmasriAI";
 const APP_TITLE_TEMPLATE = "%s";
-const APP_DESCRIPTION = "AI-powered web app for Mr. Elmasri's class!";
+const APP_DESCRIPTION =
+  "AI-powered Mr. Elmasri. How can I help you with AP Physics today?";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
