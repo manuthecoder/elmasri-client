@@ -621,8 +621,18 @@ export default function Page() {
   }, [messages]);
 
   return (
-    <div className="h-dvh flex flex-col max-h-full items-center justify-center">
-      <div className="w-full max-w-4xl flex flex-col h-dvh p-5">
+    <div
+      className="h-dvh flex flex-col max-h-full items-center justify-center"
+      style={{
+        ["WebkitAppRegion" as any]: "drag",
+      }}
+    >
+      <div
+        className="w-full max-w-4xl flex flex-col h-dvh p-5"
+        style={{
+          ["WebkitAppRegion" as any]: "no-drag",
+        }}
+      >
         <AppMenu
           course={course}
           setCourse={setCourse}
