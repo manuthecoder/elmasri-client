@@ -125,21 +125,32 @@ function DysperseAd() {
   );
 }
 
-function HowWasThisCreated() {
+function HowWasThisCreated({ isMenu }: any) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className="ml-auto text-gray-700 dark:text-white whitespace-normal max-w-[210px] h-auto py-2 sm:max-w-full"
-          style={{ whiteSpace: "pretty" }}
-          size="sm"
-          variant="outline"
-        >
-          <Icon style={{ fontSize: 20, marginBottom: -2 }} className="hidden">
-            favorite
-          </Icon>
-          How was this project created?
-        </Button>
+        {isMenu ? (
+          <Button
+            variant="ghost"
+            className="px-2 w-full cursor-default transition-none gap-1"
+          >
+            <Icon className="mr-2">info</Icon>
+            About
+            <MenubarShortcut>v0.1.0</MenubarShortcut>
+          </Button>
+        ) : (
+          <Button
+            className="ml-auto text-gray-700 dark:text-white whitespace-normal max-w-[210px] h-auto py-2 sm:max-w-full"
+            style={{ whiteSpace: "pretty" }}
+            size="sm"
+            variant="outline"
+          >
+            <Icon style={{ fontSize: 20, marginBottom: -2 }} className="hidden">
+              favorite
+            </Icon>
+            How was this project created?
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] ">
         <DialogHeader>
@@ -422,12 +433,7 @@ function AppMenu({ newChat, course, setCourse }: any) {
               Dark mode
               {darkMode && <Icon className="ml-auto">check</Icon>}
             </MenubarItem>
-
-            <MenubarItem onClick={() => {}}>
-              <Icon className="mr-2">info</Icon>
-              About
-              <MenubarShortcut>v0.1.0</MenubarShortcut>
-            </MenubarItem>
+            <HowWasThisCreated isMenu />
           </MenubarContent>
         </MenubarMenu>
 
