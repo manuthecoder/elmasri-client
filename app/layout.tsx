@@ -67,6 +67,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
           rel="stylesheet"
         />
+        <meta name="interactive-widget" content="resizes-content" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </head>
       <body className={`antialiased`}>
