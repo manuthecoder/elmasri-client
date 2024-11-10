@@ -33,6 +33,8 @@ import remarkMath from "remark-math";
 import { Icon } from "./Icon";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { generateRandomString } from "./generateRandomString";
+import { DysperseAd } from "./DysperseAd";
 dayjs.extend(relativeTime);
 
 function EmptyContainer() {
@@ -67,67 +69,6 @@ function EmptyContainer() {
           favorite
         </Icon>
       </p>
-    </div>
-  );
-}
-
-function DysperseAd() {
-  return (
-    <div>
-      <span className="opacity-60 text-xs">
-        Made with &lt;3 by{" "}
-        <a
-          href="https://click.dysperse.com/XpY4XBi"
-          target="_blank"
-          className="underline"
-        >
-          Manu
-        </a>
-      </span>
-      <p className="my-1">
-        <span className="font-bold mb-2">
-          Want to 🔒{" "}
-          <u>
-            <i>
-              <b>lock in</b>
-            </i>
-          </u>{" "}
-          and see your grades improve!? 📈📈
-        </span>{" "}
-        <br />
-        There's a great productivity platform out there called Dysperse that can
-        help you stay on top of your game.
-      </p>
-
-      <span className="my-2">
-        <li>It's approved by IUSD ✅</li>
-        <li>Automatically syncs assignments from Canvas 🔁</li>
-        <li>
-          <b>As seen on the El Vaquero! 📰🤠</b>
-        </li>
-      </span>
-
-      <a
-        href="https://click.dysperse.com/qU2SIVR"
-        target="_blank"
-        className="border flex items-center gap-2 p-3 py-0 rounded-md mt-2 bg-white dark:bg-neutral-950"
-        style={{ textDecoration: "none" }}
-      >
-        <span className="block flex-1">
-          <span className="opacity-60 text-xs">dysperse.com</span>
-          <h3 className="mt-1 mb-0">You could have 25 hours in a day.</h3>
-          <p className="mt-1 mb-0 opacity-60 text-xs">
-            Productivity is your domain. Let #dysperse be the catalyst.
-          </p>
-        </span>
-        <Image
-          alt="dysperse"
-          className="shrink-0"
-          src="/dysperse.svg"
-          width={50}
-          height={50}
-        />
-      </a>
     </div>
   );
 }
@@ -233,7 +174,14 @@ function Message({
   content,
   hideUser,
   course,
+  messages,
+  messageIndex,
+  setMessages,
+  handleSubmit,
 }: any) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(content);
+
   return (
     <div
       className="flex flex-row items-end gap-2"
@@ -255,6 +203,15 @@ function Message({
             <></>
           )}
         </div>
+      )}
+      {from === "USER" && !chips && !isEditing && (
+        <Button
+          variant="ghost"
+          className="px-0 opacity-40"
+          onClick={() => setIsEditing(true)}
+        >
+          <Icon>edit</Icon>
+        </Button>
       )}
       <div
         className={
@@ -308,12 +265,31 @@ function Message({
             <DysperseAd />
           ) : (
             <div className="prose-sm">
-              <Markdown
-                remarkPlugins={[remarkMath]}
-                rehypePlugins={[rehypeKatex]}
-              >
-                {content}
-              </Markdown>
+              {isEditing ? (
+                <div className="w-96 max-w-full flex flex-col gap-1">
+                  <Textarea
+                    value={editedContent}
+                    autoFocus
+                    onChange={(e) => setEditedContent(e.target.value)}
+                  />
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      setIsEditing(false);
+                      handleSubmit(editedContent, messageIndex);
+                    }}
+                  >
+                    Save
+                  </Button>
+                </div>
+              ) : (
+                <Markdown
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
+                >
+                  {content}
+                </Markdown>
+              )}
             </div>
           )}
         </div>
@@ -322,11 +298,21 @@ function Message({
   );
 }
 
-function MessageList({ messages, sendMessage, course }: any) {
+function MessageList({
+  handleSubmit,
+  messages,
+  setMessages,
+  sendMessage,
+  course,
+}: any) {
   return (
     <div className="flex flex-col flex-1 gap-2">
       {messages.map((message: any, index: any) => (
         <Message
+          messages={messages}
+          messageIndex={index}
+          handleSubmit={handleSubmit}
+          setMessages={setMessages}
           course={course}
           sendMessage={sendMessage}
           key={index}
@@ -607,16 +593,6 @@ const courseChips: any = {
   ],
 };
 
-function generateRandomString(length: number) {
-  let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-}
-
 export default function Page() {
   const inputRef = useRef();
   const scrollRef: any = useRef();
@@ -682,14 +658,20 @@ export default function Page() {
     setValue("");
   };
 
-  const handleSubmit = async (a: string) => {
+  const handleSubmit = async (a: string, messageIndex) => {
     if (!value.trim() && !a) return;
     setMessages(
-      [
-        ...messages,
-        { from: "USER", content: a || value },
-        { from: "AI", loading: true },
-      ].filter((e) => !e.chips)
+      messageIndex
+        ? [
+            ...messages.slice(0, messageIndex),
+            { from: "USER", content: a || value },
+            { from: "AI", loading: true },
+          ]
+        : [
+            ...messages,
+            { from: "USER", content: a || value },
+            { from: "AI", loading: true },
+          ].filter((e) => !e.chips)
     );
 
     await fetch(
@@ -703,36 +685,55 @@ export default function Page() {
         },
         body: JSON.stringify({
           course,
-          messages: [...messages, { from: "USER", content: a || value }].filter(
-            (e) => !e.chips && !e.ad
-          ),
+          messages: messageIndex
+            ? [
+                ...messages.slice(0, messageIndex),
+                { from: "USER", content: a || value },
+              ].filter((e) => !e.chips && !e.ad)
+            : [...messages, { from: "USER", content: a || value }].filter(
+                (e) => !e.chips && !e.ad
+              ),
         }),
       }
     )
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
-        setMessages([
-          ...messages,
-          { from: "USER", content: a || value },
-          { from: "AI", content: res.message },
-          ...(!messages.find((e: any) => e.ad)
-            ? [{ from: "AI", ad: true, content: res.ad }]
-            : []),
-        ]);
+        setMessages(
+          messageIndex
+            ? [
+                ...messages.slice(0, messageIndex),
+                { from: "USER", content: a || value },
+                { from: "AI", content: res.message },
+                ...(!messages.find((e: any) => e.ad)
+                  ? [{ from: "AI", ad: true, content: res.ad }]
+                  : []),
+              ]
+            : [
+                ...messages,
+                { from: "USER", content: a || value },
+                { from: "AI", content: res.message },
+                ...(!messages.find((e: any) => e.ad)
+                  ? [{ from: "AI", ad: true, content: res.ad }]
+                  : []),
+              ]
+        );
       })
       .catch((err) => {
         console.error(err);
-        setMessages([
-          ...messages,
-          { from: "USER", content: a || value },
-          {
-            from: "AI",
-            error: true,
-            content:
-              "Yikes! Something went wrong. Most likely, I might be in high demand, but I've reported the error to Manu. Try again later.",
-          },
-        ]);
+        setMessages(
+          messageIndex
+            ? messages
+            : [
+                ...messages,
+                { from: "USER", content: a || value },
+                {
+                  from: "AI",
+                  error: true,
+                  content:
+                    "Yikes! Something went wrong. Most likely, I might be in high demand, but I've reported the error to Manu. Try again later.",
+                },
+              ]
+        );
       });
     setValue("");
   };
@@ -770,7 +771,9 @@ export default function Page() {
             <EmptyContainer />
             <div className="flex-1 bg-red-500" />
             <MessageList
+              handleSubmit={handleSubmit}
               course={course}
+              setMessages={setMessages}
               sendMessage={(a: any) => handleSubmit(a)}
               messages={messages}
             />
