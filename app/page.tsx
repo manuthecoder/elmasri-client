@@ -61,7 +61,7 @@ function SpeechRecognition({ handleSubmit, setValue }: any) {
         if (event.results[0].isFinal) {
           setIsListening(false);
           recognition.stop();
-          handleSubmit(transcript);
+          handleSubmit(event.results[0][0].transcript);
         }
       };
     } else {
