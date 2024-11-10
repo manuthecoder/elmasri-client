@@ -676,6 +676,12 @@ export default function Page() {
     scrollRef.current.scrollTo({ top: 99999, behavior: "smooth" });
   };
 
+  const newChat = () => {
+    setConversationId(generateRandomString(50));
+    setMessages(defaultMessages);
+    setValue("");
+  };
+
   const handleSubmit = async (a: string) => {
     if (!value.trim() && !a) return;
     setMessages(
@@ -751,7 +757,7 @@ export default function Page() {
         <AppMenu
           course={course}
           setCourse={setCourse}
-          newChat={() => setMessages(defaultMessages)}
+          newChat={newChat}
           conversationId={conversationId}
           setConversationId={setConversationId}
           setMessages={setMessages}
