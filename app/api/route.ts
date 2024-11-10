@@ -52,10 +52,11 @@ The course you will be teaching for this chat's context will be: ${course}. You 
   )
     .then((response) => response.json())
     .catch((error) => console.error("Error:", error));
-
+  console.log(JSON.stringify(data, null, 2));
   return Response.json({
+    safetyRatings: data.candidates[0].safetyRatings,
     finishReason: data.candidates[0].finishReason,
-    message: data.candidates[0].content.parts[0].text,
+    message: data.candidates[0]?.content?.parts[0]?.text,
   });
 }
 

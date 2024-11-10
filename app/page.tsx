@@ -175,6 +175,8 @@ function Message({
   hideUser,
   course,
   messages,
+  finishReason,
+  safetyRatings,
   messageIndex,
   setMessages,
   handleSubmit,
@@ -289,6 +291,25 @@ function Message({
                 >
                   {content}
                 </Markdown>
+              )}
+              {finishReason === "SAFETY" && (
+                <div>
+                  <span className="text-xs text-red-500 dark:text-red-400">
+                    This response was flagged as potentially unsafe
+                  </span>
+                  <p className="m-0">
+                    Sorry, I can't provide that information. Please ask me
+                    something else. Error codes:{" "}
+                    {safetyRatings &&
+                      safetyRatings
+                        .filter(
+                          (rating: any) =>
+                            !["NEGLIGIBLE"].includes(rating.probability)
+                        )
+                        .map((rating: any) => rating.category)
+                        .join(", ")}
+                  </p>
+                </div>
               )}
             </div>
           )}
@@ -658,7 +679,7 @@ export default function Page() {
     setValue("");
   };
 
-  const handleSubmit = async (a: string, messageIndex) => {
+  const handleSubmit = async (a: string, messageIndex?: any) => {
     if (!value.trim() && !a) return;
     setMessages(
       messageIndex
@@ -703,7 +724,12 @@ export default function Page() {
             ? [
                 ...messages.slice(0, messageIndex),
                 { from: "USER", content: a || value },
-                { from: "AI", content: res.message },
+                {
+                  from: "AI",
+                  content: res.message,
+                  finishReason: res.finishReason,
+                  safetyRatings: res.safetyRatings,
+                },
                 ...(!messages.find((e: any) => e.ad)
                   ? [{ from: "AI", ad: true, content: res.ad }]
                   : []),
@@ -711,7 +737,12 @@ export default function Page() {
             : [
                 ...messages,
                 { from: "USER", content: a || value },
-                { from: "AI", content: res.message },
+                {
+                  from: "AI",
+                  content: res.message,
+                  finishReason: res.finishReason,
+                  safetyRatings: res.safetyRatings,
+                },
                 ...(!messages.find((e: any) => e.ad)
                   ? [{ from: "AI", ad: true, content: res.ad }]
                   : []),
