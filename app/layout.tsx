@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import dayjs from "dayjs";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./typing.css";
-import type { Viewport } from "next";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 const APP_NAME = "ElmasriAI";
 const APP_DEFAULT_TITLE = "ElmasriAI";

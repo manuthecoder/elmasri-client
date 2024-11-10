@@ -1,12 +1,10 @@
 "use client";
-import { usePWAInstall } from "react-use-pwa-install";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -20,13 +18,22 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+} from "@radix-ui/react-menubar";
 import "katex/dist/katex.min.css"; // Import the Katex CSS file
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
+import { usePWAInstall } from "react-use-pwa-install";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import { Icon } from "./Icon";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 function EmptyContainer() {
   return (
@@ -132,7 +139,8 @@ function HowWasThisCreated({ isMenu }: any) {
         {isMenu ? (
           <Button
             variant="ghost"
-            className="px-2 w-full cursor-default transition-none gap-1"
+            style={{ height: 30 }}
+            className="px-2 w-full cursor-default transition-none gap-1 font-light"
           >
             <Icon className="mr-2">info</Icon>
             About
@@ -397,7 +405,74 @@ function PwaInstaller() {
   );
 }
 
-function AppMenu({ newChat, course, setCourse }: any) {
+function History({
+  conversationId,
+  setConversationId,
+  setMessages,
+}: {
+  conversationId: any;
+  setConversationId: any;
+  setMessages: any;
+}) {
+  return (
+    <>
+      <MenubarSub>
+        <MenubarSubTrigger className="items-center py-2 hover:bg-gray-100 rounded dark:hover:bg-neutral-800 outline-none cursor-default flex gap-2 px-2 text-sm">
+          <Icon>history</Icon>
+          Chat history
+          <Icon className="ml-auto">arrow_forward_ios</Icon>
+        </MenubarSubTrigger>
+        <MenubarSubContent className="shadow-lg bg-white dark:bg-neutral-950 border rounded w-52 p-1">
+          <MenubarItem
+            className="gap-1"
+            onClick={() => {
+              if (confirm("Are you sure you want to clear chat history?"))
+                localStorage.removeItem("chatHistory");
+            }}
+          >
+            Clear
+            <Icon className="ml-auto">delete</Icon>
+          </MenubarItem>
+          {localStorage.getItem("chatHistory") &&
+            Object.entries(
+              JSON.parse(localStorage.getItem("chatHistory") as any)
+            ).map(([key, value]: any) => (
+              <MenubarItem
+                style={{ maxWidth: 200 }}
+                key={key}
+                onClick={() => {
+                  setConversationId(value.conversationId);
+                  setMessages(value.messages);
+                }}
+              >
+                <div>
+                  <div>{dayjs(value.updatedAt).fromNow()}</div>
+                  <MenubarShortcut>
+                    <span className="truncate">
+                      {value.course.split(":")[0]}
+                    </span>
+                  </MenubarShortcut>
+                </div>
+
+                {conversationId === value.conversationId && (
+                  <Icon className="ml-auto">check</Icon>
+                )}
+              </MenubarItem>
+            ))}
+        </MenubarSubContent>
+      </MenubarSub>
+    </>
+  );
+}
+
+function AppMenu({
+  newChat,
+  course,
+  setCourse,
+  conversationId,
+  setConversationId,
+  setMessages,
+}: any) {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -451,6 +526,11 @@ function AppMenu({ newChat, course, setCourse }: any) {
               Dark mode
               {darkMode && <Icon className="ml-auto">check</Icon>}
             </MenubarItem>
+            <History
+              conversationId={conversationId}
+              setConversationId={setConversationId}
+              setMessages={setMessages}
+            />
             <HowWasThisCreated isMenu />
           </MenubarContent>
         </MenubarMenu>
@@ -527,6 +607,16 @@ const courseChips: any = {
   ],
 };
 
+function generateRandomString(length: number) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 export default function Page() {
   const inputRef = useRef();
   const scrollRef: any = useRef();
@@ -555,7 +645,32 @@ export default function Page() {
     },
   ];
 
+  const [conversationId, setConversationId] = useState<any>(
+    generateRandomString(50)
+  );
   const [messages, setMessages] = useState<any>(defaultMessages);
+
+  useEffect(() => {
+    const chatHistory = localStorage.getItem("chatHistory");
+    const history = JSON.parse(chatHistory || "{}");
+    if (messages.find((e: any) => e.from === "USER" && !e.chips))
+      localStorage.setItem(
+        "chatHistory",
+        JSON.stringify({
+          ...history,
+          [conversationId]: {
+            course,
+            updatedAt: new Date().toISOString(),
+            conversationId,
+            messages: messages,
+          },
+        })
+      );
+  }, [messages, conversationId]);
+
+  useEffect(() => {
+    (inputRef.current as any)?.focus();
+  }, [messages]);
 
   const scrollToBottom = () => {
     scrollRef.current.scrollTo({ top: 99999, behavior: "smooth" });
@@ -636,9 +751,10 @@ export default function Page() {
         <AppMenu
           course={course}
           setCourse={setCourse}
-          newChat={() => {
-            setMessages(defaultMessages);
-          }}
+          newChat={() => setMessages(defaultMessages)}
+          conversationId={conversationId}
+          setConversationId={setConversationId}
+          setMessages={setMessages}
         />
         <div
           ref={scrollRef}
