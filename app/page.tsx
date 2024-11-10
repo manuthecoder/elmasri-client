@@ -43,7 +43,7 @@ function EmptyContainer() {
       <div>
         <Image
           alt="Elmasri"
-          src="/elmasri/1.png"
+          src="/elmasri/christmas.png"
           width={150}
           height={150}
           className="mx-auto"
