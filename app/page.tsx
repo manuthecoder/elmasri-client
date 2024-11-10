@@ -37,6 +37,52 @@ import { generateRandomString } from "./generateRandomString";
 import { DysperseAd } from "./DysperseAd";
 dayjs.extend(relativeTime);
 
+function SpeechRecognition({ handleSubmit, setValue }: any) {
+  const [isListening, setIsListening] = useState(false);
+
+  const handleClick = () => {
+    setIsListening(!isListening);
+    if (!isListening) {
+      const recognition = new (window as any).webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+      recognition.start();
+
+      recognition.onresult = (event: any) => {
+        const transcript = Array.from(event.results)
+          .map((result: any) => result[0])
+          .map((result: any) => result.transcript)
+          .join("");
+
+        setValue(transcript);
+
+        // if done
+        if (event.results[0].isFinal) {
+          setIsListening(false);
+          recognition.stop();
+          handleSubmit(transcript);
+        }
+      };
+    } else {
+      setIsListening(false);
+    }
+  };
+
+  return (
+    <Button
+      className={`
+        ${
+          isListening ? "bg-red-500" : "bg-gray-100 dark:bg-neutral-800"
+        } mr-2 px-2`}
+      onClick={handleClick}
+      variant="destructive"
+    >
+      <Icon>{isListening ? "stop" : "mic"} </Icon>
+    </Button>
+  );
+}
+
 function EmptyContainer() {
   return (
     <div className="flex flex-col items-center justify-center mb-2 gap-2 py-14">
@@ -363,6 +409,7 @@ function SendMessage({
 
   return (
     <div className="flex" style={{ minHeight: 38 }}>
+      <SpeechRecognition handleSubmit={handleSubmit} setValue={setValue} />
       <Textarea
         style={{ minHeight: 38, maxHeight: 100 }}
         className="bg-neutral-50 dark:bg-neutral-950"
