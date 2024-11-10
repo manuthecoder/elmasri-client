@@ -73,10 +73,12 @@ function SpeechRecognition({ handleSubmit, setValue }: any) {
     <Button
       className={`
         ${
-          isListening ? "bg-red-500" : "bg-gray-100 dark:bg-neutral-800"
+          isListening
+            ? "bg-red-500 text-white"
+            : "bg-gray-100 text-black dark:text-white dark:bg-neutral-800"
         } mr-2 px-2`}
       onClick={handleClick}
-      variant="destructive"
+      variant="ghost"
     >
       <Icon>{isListening ? "stop" : "mic"} </Icon>
     </Button>
