@@ -105,7 +105,10 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
   const [open, setOpen] = useState(false);
 
   const [defaultOpen] = useState(
-    !Boolean(localStorage.getItem("hasOpenedSymbolPicker"))
+    !Boolean(
+      typeof localStorage !== "undefined" &&
+        localStorage.getItem("hasOpenedSymbolPicker")
+    )
   );
 
   useEffect(() => {
