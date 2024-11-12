@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   Menubar,
   MenubarContent,
@@ -17,24 +18,36 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import {
   MenubarSub,
   MenubarSubContent,
   MenubarSubTrigger,
 } from "@radix-ui/react-menubar";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import "katex/dist/katex.min.css"; // Import the Katex CSS file
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import { usePWAInstall } from "react-use-pwa-install";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import { Icon } from "./Icon";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { generateRandomString } from "./generateRandomString";
 import { DysperseAd } from "./DysperseAd";
+import { generateRandomString } from "./generateRandomString";
+import { Icon } from "./Icon";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 dayjs.extend(relativeTime);
 
 function SpeechRecognition({ handleSubmit, setValue }: any) {
@@ -76,12 +89,188 @@ function SpeechRecognition({ handleSubmit, setValue }: any) {
           isListening
             ? "bg-red-500 hover:bg-red-500 text-white"
             : "bg-gray-100 text-black dark:text-white dark:bg-neutral-800"
-        } mr-2 px-2`}
+        } px-2`}
       onClick={handleClick}
       variant="ghost"
     >
       <Icon>{isListening ? "stop" : "mic"} </Icon>
     </Button>
+  );
+}
+
+function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
+  const popoverRef = useRef(null);
+  const [currentlySelected, setCurrentlySelected] = useState(0);
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const [defaultOpen] = useState(
+    !Boolean(localStorage.getItem("hasOpenedSymbolPicker"))
+  );
+
+  useEffect(() => {
+    if (open) localStorage.setItem("hasOpenedSymbolPicker", "true");
+  }, [defaultOpen]);
+
+  const symbols = [
+    { symbol: "𝐹", name: "Force" },
+    { symbol: "𝐸", name: "Electrical field" },
+    { symbol: "𝐵", name: "Magnetic field" },
+    { symbol: "𝑉", name: "Voltage" },
+    { symbol: "𝐼", name: "Current" },
+    { symbol: "𝑅", name: "Resistance" },
+    { symbol: "𝑔", name: "Gravity" },
+    { symbol: "𝑘", name: "Boltzmann constant" },
+    { symbol: "𝑒", name: "Euler's number" },
+    { symbol: "𝜀", name: "Emf/Permittivity" },
+    { symbol: "∆", name: "Delta" },
+    { symbol: "θ", name: "Theta" },
+    { symbol: "π", name: "Pi" },
+    { symbol: "α", name: "Alpha" },
+    { symbol: "β", name: "Beta" },
+    { symbol: "γ", name: "Gamma" },
+    { symbol: "λ", name: "Lambda" },
+    { symbol: "ω", name: "Omega" },
+    { symbol: "Ω", name: "Capital omega" },
+    { symbol: "∑", name: "Summation" },
+    { symbol: "∫", name: "Integral" },
+    { symbol: "∂", name: "Partial derivative" },
+    { symbol: "√", name: "Square root" },
+    { symbol: "∞", name: "Infinity" },
+    { symbol: "≈", name: "Approximately" },
+    { symbol: "≠", name: "Not equal" },
+    { symbol: "≤", name: "Less than or equal to" },
+    { symbol: "≥", name: "Greater than or equal to" },
+    { symbol: "→", name: "Right arrow" },
+    { symbol: "←", name: "Left arrow" },
+    { symbol: "∴", name: "Therefore" },
+    { symbol: "∵", name: "Because" },
+    { symbol: "⊥", name: "Perpendicular" },
+    { symbol: "‖", name: "Parallel" },
+    { symbol: "⃗", name: "Vector notation" },
+    { symbol: "∝", name: "Proportional to" },
+    { symbol: "⋅", name: "Dot product" },
+    { symbol: "×", name: "Cross product" },
+    { symbol: "∠", name: "Angle" },
+    { symbol: "±", name: "Plus-minus" },
+    { symbol: "′", name: "Prime" },
+    { symbol: "″", name: "Double prime" },
+    { symbol: "ℏ", name: "Reduced Planck constant" },
+    { symbol: "𝜑", name: "Magnetic flux" },
+  ].filter((t) => t.name.toLowerCase().includes(query.toLowerCase()));
+
+  const handlePress = (symbol: string) => {
+    setValue((t: string) => t + symbol);
+    setOpen(false);
+    setTimeout(() => {
+      inputRef.current.focus();
+    }, 10);
+  };
+
+  return (
+    <Popover
+      onOpenChange={(open) => {
+        setOpen(open);
+        if (open) {
+          setQuery("");
+        } else inputRef.current.focus();
+      }}
+      open={open}
+    >
+      <Tooltip defaultOpen={defaultOpen}>
+        <TooltipTrigger asChild>
+          <PopoverTrigger asChild>
+            <Button
+              className="bg-gray-100 px-2 text-black dark:text-white dark:bg-neutral-800"
+              variant="ghost"
+              id="symbolsTrigger"
+            >
+              <Icon
+                style={{
+                  fontVariationSettings: "'wght' 100",
+                }}
+              >
+                special_character
+              </Icon>
+            </Button>
+          </PopoverTrigger>
+        </TooltipTrigger>
+        <TooltipContent
+          align="start"
+          className="bg-neutral-50 border shadow-xl rounded dark:border-neutral-400 dark:bg-neutral-700"
+        >
+          <p className="prose dark:prose-invert text-xs">
+            You can now insert special characters by pressing <kbd>/</kbd>
+          </p>
+        </TooltipContent>
+      </Tooltip>
+      <PopoverContent align="start" className="w-50 p-0 select-none">
+        <div className="px-4 pt-4">
+          <Input
+            placeholder="Search..."
+            autoFocus
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setCurrentlySelected(symbols.length === 0 ? -1 : 0);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                setCurrentlySelected((t) => Math.max(0, t - 1));
+              } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+
+                setCurrentlySelected((t) =>
+                  Math.min(symbols.length - 1, t + 1)
+                );
+              } else if (e.key === "ArrowDown") {
+                e.preventDefault();
+
+                setCurrentlySelected((t) =>
+                  Math.min(symbols.length - 1, t + 3)
+                );
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+
+                setCurrentlySelected((t) => Math.max(0, t - 3));
+              } else if (e.key === "Enter") {
+                e.preventDefault();
+
+                handlePress(symbols[currentlySelected].symbol);
+              }
+            }}
+          />
+        </div>
+        <div
+          className="max-h-72 w-50 overflow-y-scroll grid grid-cols-3 cursor-pointer p-4 pt-2"
+          style={{ width: 400, maxWidth: "calc(100vw - 50px)" }}
+        >
+          {symbols.length === 0 && (
+            <div className="col-span-3">
+              <p>No results found</p>
+            </div>
+          )}
+          {symbols.map((symbol, index) => (
+            <div
+              key={symbol.name}
+              onClick={() => handlePress(symbol.symbol)}
+              className={`justify-start hover:bg-gray-100 active:bg-gray-200 border border-transparent dark:hover:bg-gray-900 dark:active:bg-gray-800 p-2 rounded-xl ${
+                currentlySelected === index ? "bg-gray-100 border-gray-400" : ""
+              }`}
+            >
+              <span className="katex" style={{ fontSize: 30 }}>
+                {symbol.symbol}
+              </span>
+              <p className="text-xs opacity-50">{symbol.name}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs prose p-4">
+          <kbd>Arrow keys</kbd> to move, <kbd>enter</kbd> to select
+        </p>
+      </PopoverContent>
+    </Popover>
   );
 }
 
@@ -402,6 +591,7 @@ function SendMessage({
   messages,
   setValue,
   handleSubmit,
+  ref,
 }: any) {
   useEffect(() => {
     const input: any = inputRef.current;
@@ -410,8 +600,11 @@ function SendMessage({
   }, [inputRef, value]);
 
   return (
-    <div className="flex" style={{ minHeight: 38 }}>
-      <SpeechRecognition handleSubmit={handleSubmit} setValue={setValue} />
+    <div className="flex gap-2" style={{ minHeight: 38 }}>
+      {!value && (
+        <SpeechRecognition handleSubmit={handleSubmit} setValue={setValue} />
+      )}
+      <SymbolPicker inputRef={inputRef} value={value} setValue={setValue} />
       <Textarea
         style={{ minHeight: 38, maxHeight: 100 }}
         className="bg-neutral-50 dark:bg-neutral-950"
@@ -420,16 +613,19 @@ function SendMessage({
         value={value}
         autoFocus
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Type a message..."
-        onKeyPress={(e) => {
+        placeholder="Send message..."
+        onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             handleSubmit();
           }
+          if (e.key === "/") {
+            e.preventDefault();
+            document.getElementById("symbolsTrigger")?.click();
+          }
         }}
       />
       <Button
-        className="ml-2"
         style={{ height: 38 }}
         onClick={() => handleSubmit(value)}
         disabled={
@@ -823,51 +1019,52 @@ export default function Page() {
   }, [messages]);
 
   return (
-    <div
-      className="h-dvh flex flex-col max-h-full items-center justify-center"
-      style={{
-        ["WebkitAppRegion" as any]: "drag",
-      }}
-    >
+    <TooltipProvider>
       <div
-        className="w-full max-w-4xl flex flex-col h-dvh p-5"
+        className="h-dvh flex flex-col max-h-full items-center justify-center"
         style={{
-          ["WebkitAppRegion" as any]: "no-drag",
+          ["WebkitAppRegion" as any]: "drag",
         }}
       >
-        <AppMenu
-          course={course}
-          setCourse={setCourse}
-          newChat={newChat}
-          conversationId={conversationId}
-          setConversationId={setConversationId}
-          setMessages={setMessages}
-        />
         <div
-          ref={scrollRef}
-          className="overflow-y-scroll gap-1 flex-1 my-2 rounded-md border bg-white dark:bg-neutral-950"
+          className="w-full max-w-4xl flex flex-col h-dvh p-5"
+          style={{
+            ["WebkitAppRegion" as any]: "no-drag",
+          }}
         >
-          <div className="p-4">
-            <EmptyContainer />
-            <div className="flex-1 bg-red-500" />
-            <MessageList
-              handleSubmit={handleSubmit}
-              course={course}
-              setMessages={setMessages}
-              sendMessage={(a: any) => handleSubmit(a)}
-              messages={messages}
-            />
+          <AppMenu
+            course={course}
+            setCourse={setCourse}
+            newChat={newChat}
+            conversationId={conversationId}
+            setConversationId={setConversationId}
+            setMessages={setMessages}
+          />
+          <div
+            ref={scrollRef}
+            className="overflow-y-scroll gap-1 flex-1 my-2 rounded-md border bg-white dark:bg-neutral-950"
+          >
+            <div className="p-4">
+              <EmptyContainer />
+              <div className="flex-1 bg-red-500" />
+              <MessageList
+                handleSubmit={handleSubmit}
+                course={course}
+                setMessages={setMessages}
+                sendMessage={(a: any) => handleSubmit(a)}
+                messages={messages}
+              />
+            </div>
           </div>
+          <SendMessage
+            inputRef={inputRef}
+            value={value}
+            messages={messages}
+            setValue={setValue}
+            handleSubmit={handleSubmit}
+          />
         </div>
-        <SendMessage
-          inputRef={inputRef}
-          value={value}
-          messages={messages}
-          setValue={setValue}
-          handleSubmit={handleSubmit}
-        />
       </div>
-    </div>
+    </TooltipProvider>
   );
 }
-
