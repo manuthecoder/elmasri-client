@@ -99,7 +99,6 @@ function SpeechRecognition({ handleSubmit, setValue }: any) {
 }
 
 function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
-  const popoverRef = useRef(null);
   const [currentlySelected, setCurrentlySelected] = useState(0);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
