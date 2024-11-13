@@ -895,6 +895,7 @@ function AppMenu({
       "dark",
       localStorage.getItem("theme") === "dark" ||
         (!("theme" in localStorage) &&
+          typeof window !== "undefined" &&
           window.matchMedia("(prefers-color-scheme: dark)").matches)
     );
     document
@@ -1258,14 +1259,12 @@ export default function Page() {
               />
             </div>
           </div>
-          <NoSSR>
-            <MathLoader />
-            <SendMessage
-              editor={editor}
-              messages={messages}
-              handleSubmit={handleSubmit}
-            />
-          </NoSSR>
+          <MathLoader />
+          <SendMessage
+            editor={editor}
+            messages={messages}
+            handleSubmit={handleSubmit}
+          />
         </div>
       </div>
     </TooltipProvider>
