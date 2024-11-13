@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import NoSSR from "react-no-ssr";
 import {
   Menubar,
   MenubarContent,
@@ -1257,7 +1258,9 @@ export default function Page() {
               />
             </div>
           </div>
-          <MathLoader />
+          <NoSSR>
+            <MathLoader />
+          </NoSSR>
           <SendMessage
             editor={editor}
             messages={messages}
