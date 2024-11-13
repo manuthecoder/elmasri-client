@@ -103,12 +103,11 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
 
-  const [defaultOpen] = useState(
-    !Boolean(
-      typeof localStorage !== "undefined" &&
-        localStorage.getItem("hasOpenedSymbolPicker")
-    )
-  );
+  const [defaultOpen, setDefaultOpen] = useState(false);
+
+  useEffect(() => {
+    setDefaultOpen(localStorage.getItem("hasOpenedSymbolPicker") === "true");
+  }, []);
 
   useEffect(() => {
     if (open) localStorage.setItem("hasOpenedSymbolPicker", "true");
@@ -876,6 +875,23 @@ export default function Page() {
 
   const [value, setValue] = useState<any>("");
   const [course, setCourse] = useState<any>("AP Physics 1: Algebra-Based");
+
+  // if the user is pressing on a key but they are not focused on any text area or input, inputRef.current.focus()
+  useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      if (
+        !["TEXTAREA", "INPUT"].includes(document.activeElement.tagName) &&
+        !document.querySelector("[contenteditable=true]:focus") &&
+        !document.querySelector("textarea:focus") &&
+        !document.querySelector("input:focus")
+      ) {
+        e.preventDefault();
+        inputRef.current.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [inputRef]);
 
   const defaultMessages = [
     {
