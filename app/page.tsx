@@ -208,7 +208,7 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
         </TooltipTrigger>
         <TooltipContent
           align="start"
-          className="bg-neutral-50 border shadow-xl rounded dark:border-neutral-400 dark:bg-neutral-700"
+          className="bg-neutral-50 border shadow-xl rounded dark:border-neutral-700 dark:bg-neutral-800"
         >
           <p className="prose dark:prose-invert text-xs">
             You can now insert special characters by pressing <kbd>/</kbd>
@@ -225,6 +225,7 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
               setQuery(e.target.value);
               setCurrentlySelected(symbols.length === 0 ? -1 : 0);
             }}
+            style={{ marginBottom: 1 }}
             onKeyDown={(e) => {
               if (e.key === "ArrowLeft") {
                 e.preventDefault();
