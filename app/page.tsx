@@ -46,7 +46,6 @@ import "katex/dist/katex.min.css"; // Import the Katex CSS file
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
-import { EditableMathField } from "react-mathquill";
 import { usePWAInstall } from "react-use-pwa-install";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
@@ -54,6 +53,14 @@ import { Markdown as TipTapMarkdown } from "tiptap-markdown";
 import { DysperseAd } from "./DysperseAd";
 import { generateRandomString } from "./generateRandomString";
 import { Icon } from "./Icon";
+
+import dynamic from "next/dynamic";
+import { MathField } from "react-mathquill";
+
+const EditableMathField = dynamic(
+  () => import("react-mathquill").then((mod) => mod.EditableMathField),
+  { ssr: false }
+);
 
 dayjs.extend(relativeTime);
 
@@ -1096,6 +1103,12 @@ export default function Page() {
     generateRandomString(50)
   );
   const [messages, setMessages] = useState<any>(defaultMessages);
+
+  useEffect(() => {
+    import("react-mathquill").then((mq) => {
+      mq.addStyles();
+    });
+  }, []);
 
   useEffect(() => {
     const chatHistory = localStorage.getItem("chatHistory");
