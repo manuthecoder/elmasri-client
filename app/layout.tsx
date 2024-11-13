@@ -76,7 +76,6 @@ export default function RootLayout({
       </head>
       <body className={`antialiased`}>
         <Analytics />
-        <MathLoader />
         {children}
         <Toaster />
       </body>

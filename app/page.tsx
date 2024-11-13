@@ -55,6 +55,7 @@ import React, { useCallback } from "react";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { EditableMathField } from "react-mathquill";
 import { toast } from "@/hooks/use-toast";
+import MathLoader from "./MathLoader";
 
 dayjs.extend(relativeTime);
 
@@ -1256,6 +1257,7 @@ export default function Page() {
               />
             </div>
           </div>
+          <MathLoader />
           <SendMessage
             editor={editor}
             messages={messages}
