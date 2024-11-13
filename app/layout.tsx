@@ -5,6 +5,7 @@ import "./globals.scss";
 import "./typing.css";
 import relativeTime from "dayjs/plugin/relativeTime";
 import MathLoader from "./MathLoader";
+import { Toaster } from "@/components/ui/toaster";
 dayjs.extend(relativeTime);
 
 const APP_NAME = "ElmasriAI";
@@ -77,6 +78,7 @@ export default function RootLayout({
         <Analytics />
         <MathLoader />
         {children}
+        <Toaster />
       </body>
     </html>
   );

@@ -4,6 +4,10 @@
   margin: 3px 0;
   padding-bottom: 10px;
 }
+.dark .mq-cursor {
+  filter: invert(1);
+}
+
 .typing span {
   content: "";
   animation: blink 1.5s infinite;
@@ -36,3 +40,4 @@
     opacity: 0.1;
   }
 }
+

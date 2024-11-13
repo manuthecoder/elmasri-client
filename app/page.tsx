@@ -54,6 +54,7 @@ import { Mathematics } from "@tiptap-pro/extension-mathematics";
 import React, { useCallback } from "react";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { EditableMathField } from "react-mathquill";
+import { toast } from "@/hooks/use-toast";
 
 dayjs.extend(relativeTime);
 
@@ -202,6 +203,15 @@ function SymbolPicker({ editor }: { editor: any }) {
               className="bg-gray-100 px-2 text-black dark:text-white dark:bg-neutral-800"
               variant="ghost"
               id="symbolsTrigger"
+              onClick={() => {
+                if (!localStorage.getItem("charactersHint")) {
+                  toast({
+                    title: "Pro tip",
+                    description: "Hit / to add Greek letters & more",
+                  });
+                  localStorage.setItem("charactersHint", "true");
+                }
+              }}
             >
               <Icon style={{ fontVariationSettings: "'wght' 100" }}>
                 special_character
@@ -610,6 +620,15 @@ function EquationEditor({ editor }: any) {
               className="bg-gray-100 dark:bg-neutral-800 px-2 text-black dark:text-white"
               variant="ghost"
               id="functionsTrigger"
+              onClick={() => {
+                if (!localStorage.getItem("functionsHint")) {
+                  toast({
+                    title: "Pro tip",
+                    description: "Hit @ to quickly add formulas & more",
+                  });
+                  localStorage.setItem("functionsHint", "true");
+                }
+              }}
             >
               <Icon>function</Icon>
             </Button>
