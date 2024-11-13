@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import NoSSR from "react-no-ssr";
 import {
   Menubar,
   MenubarContent,
@@ -26,37 +25,35 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
-} from "@radix-ui/react-menubar";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "katex/dist/katex.min.css"; // Import the Katex CSS file
-import Image from "next/image";
-import { useEffect, useImperativeHandle, useRef, useState } from "react";
-import Markdown from "react-markdown";
-import { usePWAInstall } from "react-use-pwa-install";
-import rehypeKatex from "rehype-katex";
-import remarkMath from "remark-math";
-import { DysperseAd } from "./DysperseAd";
-import { generateRandomString } from "./generateRandomString";
-import { Icon } from "./Icon";
-import { Markdown as TipTapMarkdown } from "tiptap-markdown";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { EditorContent, Extension, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { Mathematics } from "@tiptap-pro/extension-mathematics";
-import React, { useCallback } from "react";
-import { Placeholder } from "@tiptap/extension-placeholder";
-import { EditableMathField } from "react-mathquill";
 import { toast } from "@/hooks/use-toast";
-import MathLoader from "./MathLoader";
+import {
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+} from "@radix-ui/react-menubar";
+import { Mathematics } from "@tiptap-pro/extension-mathematics";
+import { Placeholder } from "@tiptap/extension-placeholder";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "katex/dist/katex.min.css"; // Import the Katex CSS file
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import Markdown from "react-markdown";
+import { EditableMathField } from "react-mathquill";
+import { usePWAInstall } from "react-use-pwa-install";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
+import { Markdown as TipTapMarkdown } from "tiptap-markdown";
+import { DysperseAd } from "./DysperseAd";
+import { generateRandomString } from "./generateRandomString";
+import { Icon } from "./Icon";
 
 dayjs.extend(relativeTime);
 
