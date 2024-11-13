@@ -6,6 +6,7 @@ import "./typing.css";
 import relativeTime from "dayjs/plugin/relativeTime";
 import MathLoader from "./MathLoader";
 import { Toaster } from "@/components/ui/toaster";
+import Script from "next/script";
 dayjs.extend(relativeTime);
 
 const APP_NAME = "ElmasriAI";
@@ -70,6 +71,15 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
           rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.min.css"
+        />
+        <Script
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.min.js"
+          type="text/javascript"
         />
         <meta name="interactive-widget" content="resizes-content" />
         <link rel="shortcut icon" href="/favicon.ico" />

@@ -1259,7 +1259,6 @@ export default function Page() {
               />
             </div>
           </div>
-          <MathLoader />
           <SendMessage
             editor={editor}
             messages={messages}
