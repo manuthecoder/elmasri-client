@@ -1,9 +1,10 @@
 import { Analytics } from "@vercel/analytics/react";
 import dayjs from "dayjs";
 import type { Metadata, Viewport } from "next";
-import "./globals.css";
+import "./globals.scss";
 import "./typing.css";
 import relativeTime from "dayjs/plugin/relativeTime";
+import MathLoader from "./MathLoader";
 dayjs.extend(relativeTime);
 
 const APP_NAME = "ElmasriAI";
@@ -74,8 +75,10 @@ export default function RootLayout({
       </head>
       <body className={`antialiased`}>
         <Analytics />
+        <MathLoader />
         {children}
       </body>
     </html>
   );
 }
+

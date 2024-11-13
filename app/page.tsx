@@ -41,16 +41,29 @@ import remarkMath from "remark-math";
 import { DysperseAd } from "./DysperseAd";
 import { generateRandomString } from "./generateRandomString";
 import { Icon } from "./Icon";
+import { Markdown as TipTapMarkdown } from "tiptap-markdown";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { EditorContent, Extension, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { Mathematics } from "@tiptap-pro/extension-mathematics";
+import React, { useCallback } from "react";
+import { Placeholder } from "@tiptap/extension-placeholder";
+import { EditableMathField } from "react-mathquill";
 
 dayjs.extend(relativeTime);
 
-function SpeechRecognition({ handleSubmit, setValue }: any) {
+function SpeechRecognition({
+  editor,
+  handleSubmit,
+}: {
+  editor: any;
+  handleSubmit: any;
+}) {
   const [isListening, setIsListening] = useState(false);
 
   const handleClick = () => {
@@ -68,7 +81,7 @@ function SpeechRecognition({ handleSubmit, setValue }: any) {
           .map((result: any) => result.transcript)
           .join("");
 
-        setValue(transcript);
+        editor.commands.setContent(transcript);
 
         // if done
         if (event.results[0].isFinal) {
@@ -83,35 +96,30 @@ function SpeechRecognition({ handleSubmit, setValue }: any) {
   };
 
   return (
-    <Button
-      className={`
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          className={`
         ${
           isListening
             ? "bg-red-500 hover:bg-red-500 text-white"
             : "bg-gray-100 text-black dark:text-white dark:bg-neutral-800"
         } px-2`}
-      onClick={handleClick}
-      variant="ghost"
-    >
-      <Icon>{isListening ? "stop" : "mic"} </Icon>
-    </Button>
+          onClick={handleClick}
+          variant="ghost"
+        >
+          <Icon>{isListening ? "stop" : "mic"} </Icon>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>Speak with Mr. Elmasri</TooltipContent>
+    </Tooltip>
   );
 }
 
-function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
+function SymbolPicker({ editor }: { editor: any }) {
   const [currentlySelected, setCurrentlySelected] = useState(0);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-
-  const [defaultOpen, setDefaultOpen] = useState(false);
-
-  useEffect(() => {
-    setDefaultOpen(localStorage.getItem("hasOpenedSymbolPicker") === "true");
-  }, []);
-
-  useEffect(() => {
-    if (open) localStorage.setItem("hasOpenedSymbolPicker", "true");
-  }, [defaultOpen]);
 
   const symbols = [
     { symbol: "𝐹", name: "Force" },
@@ -161,10 +169,10 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
   ].filter((t) => t.name.toLowerCase().includes(query.toLowerCase()));
 
   const handlePress = (symbol: string) => {
-    setValue((t: string) => t + symbol);
+    editor.commands.insertContent(symbol);
     setOpen(false);
     setTimeout(() => {
-      inputRef.current.focus();
+      editor.view.dom.focus();
     }, 10);
   };
 
@@ -183,11 +191,11 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
         setOpen(open);
         if (open) {
           setQuery("");
-        } else inputRef.current.focus();
+        } else editor.view.dom.focus();
       }}
       open={open}
     >
-      <Tooltip defaultOpen={defaultOpen}>
+      <Tooltip>
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
             <Button
@@ -195,24 +203,13 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
               variant="ghost"
               id="symbolsTrigger"
             >
-              <Icon
-                style={{
-                  fontVariationSettings: "'wght' 100",
-                }}
-              >
+              <Icon style={{ fontVariationSettings: "'wght' 100" }}>
                 special_character
               </Icon>
             </Button>
           </PopoverTrigger>
         </TooltipTrigger>
-        <TooltipContent
-          align="start"
-          className="bg-neutral-50 border shadow-xl rounded dark:border-neutral-700 dark:bg-neutral-800"
-        >
-          <p className="prose dark:prose-invert text-xs">
-            You can now insert special characters by pressing <kbd>/</kbd>
-          </p>
-        </TooltipContent>
+        <TooltipContent>Insert special character</TooltipContent>
       </Tooltip>
       <PopoverContent align="start" className="w-50 p-0 select-none">
         <div className="px-4 pt-4">
@@ -595,45 +592,106 @@ function MessageList({
   );
 }
 
-function SendMessage({
-  inputRef,
-  value,
-  messages,
-  setValue,
-  handleSubmit,
-  ref,
-}: any) {
+function EquationEditor({ editor }: any) {
+  const [latex, setLatex] = useState("");
+
+  const handleAdd = () => {
+    editor.commands.insertContent(`$${latex}$ `);
+    editor.view.dom.focus();
+    setLatex("");
+  };
+
+  return (
+    <Popover>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <PopoverTrigger asChild>
+            <Button
+              className="bg-gray-100 dark:bg-neutral-800 px-2 text-black dark:text-white"
+              variant="ghost"
+            >
+              <Icon>function</Icon>
+            </Button>
+          </PopoverTrigger>
+        </TooltipTrigger>
+        <TooltipContent>Insert equation</TooltipContent>
+      </Tooltip>
+      <PopoverContent align="start">
+        <h4 className="mb-2 text-center">Type an equation below...</h4>
+        <div className="w-50 p-0 flex flex-col">
+          <EditableMathField
+            latex={latex}
+            onChange={(mathField) => {
+              setLatex(mathField.latex());
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleAdd();
+              }
+            }}
+            // auto commands
+            style={{ borderRadius: 15 }}
+            className="px-4 py-2"
+            config={{
+              autoCommands:
+                "pi theta sqrt sum int alpha beta gamma delta omega pm",
+              // convert +- to ±, mathquill object
+            }}
+          />
+          <Button onClick={handleAdd} className="mt-2">
+            Insert
+            <Icon>add</Icon>
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+function SendMessage({ editor, messages, handleSubmit }: any) {
   useEffect(() => {
-    const input: any = inputRef.current;
-    input.style.height = "auto";
-    input.style.height = input.scrollHeight + "px";
-  }, [inputRef, value]);
+    if (editor) setTimeout(() => editor.view.dom.focus(), 100);
+  }, [editor]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      if (
+        editor &&
+        !["TEXTAREA", "INPUT"].includes(
+          document?.activeElement?.tagName || "-1"
+        ) &&
+        !document.querySelector("[contenteditable=true]:focus") &&
+        !document.querySelector("textarea:focus") &&
+        !document.querySelector("input:focus")
+      ) {
+        e.preventDefault();
+        editor.view.dom.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [editor]);
+
+  const value = editor?.storage?.markdown?.getMarkdown?.();
+
+  if (!editor) {
+    return null;
+  }
 
   return (
     <div className="flex gap-2" style={{ minHeight: 38 }}>
       {!value && (
-        <SpeechRecognition handleSubmit={handleSubmit} setValue={setValue} />
+        <SpeechRecognition handleSubmit={handleSubmit} editor={editor} />
       )}
-      <SymbolPicker inputRef={inputRef} value={value} setValue={setValue} />
-      <Textarea
-        style={{ minHeight: 38, maxHeight: 100 }}
-        className="bg-neutral-50 dark:bg-neutral-950"
-        rows={1}
-        ref={inputRef as any}
-        value={value}
+      <SymbolPicker editor={editor} />
+      <EquationEditor editor={editor} />
+      <EditorContent
         autoFocus
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Send message..."
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleSubmit();
-          }
-          if (e.key === "/") {
-            e.preventDefault();
-            document.getElementById("symbolsTrigger")?.click();
-          }
-        }}
+        className="flex overflow-y-scroll w-full flex-1 bg-neutral-50 dark:bg-neutral-950 rounded-md border border-input px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        editor={editor}
+        spellCheck={false}
+        style={{ minHeight: 38, maxHeight: 100 }}
       />
       <Button
         style={{ height: 38 }}
@@ -870,28 +928,34 @@ const courseChips: any = {
 };
 
 export default function Page() {
-  const inputRef = useRef();
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Mathematics,
+      Placeholder.configure({
+        placeholder: "Type your message...",
+      }),
+      TipTapMarkdown,
+    ],
+    content: ``,
+    editorProps: {
+      handleKeyDown: (t, e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          handleSubmit(editor?.storage?.markdown?.getMarkdown?.());
+          return true;
+        }
+        if (e.key === "/") {
+          e.preventDefault();
+          document.getElementById("symbolsTrigger")?.click();
+          return true;
+        }
+      },
+    },
+  });
+  const value = editor?.storage?.markdown?.getMarkdown?.();
+
   const scrollRef: any = useRef();
-
-  const [value, setValue] = useState<any>("");
   const [course, setCourse] = useState<any>("AP Physics 1: Algebra-Based");
-
-  // if the user is pressing on a key but they are not focused on any text area or input, inputRef.current.focus()
-  useEffect(() => {
-    const handleKeyDown = (e: any) => {
-      if (
-        !["TEXTAREA", "INPUT"].includes(document.activeElement.tagName) &&
-        !document.querySelector("[contenteditable=true]:focus") &&
-        !document.querySelector("textarea:focus") &&
-        !document.querySelector("input:focus")
-      ) {
-        e.preventDefault();
-        inputRef.current.focus();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [inputRef]);
 
   const defaultMessages = [
     {
@@ -937,10 +1001,6 @@ export default function Page() {
       );
   }, [messages, conversationId]);
 
-  useEffect(() => {
-    (inputRef.current as any)?.focus();
-  }, [messages]);
-
   const scrollToBottom = () => {
     scrollRef.current.scrollTo({ top: 99999, behavior: "smooth" });
   };
@@ -948,7 +1008,6 @@ export default function Page() {
   const newChat = () => {
     setConversationId(generateRandomString(50));
     setMessages(defaultMessages);
-    setValue("");
   };
 
   const handleSubmit = async (a: string, messageIndex?: any) => {
@@ -1038,7 +1097,7 @@ export default function Page() {
               ]
         );
       });
-    setValue("");
+    editor?.commands.setContent("");
   };
 
   useEffect(() => {
@@ -1084,10 +1143,8 @@ export default function Page() {
             </div>
           </div>
           <SendMessage
-            inputRef={inputRef}
-            value={value}
+            editor={editor}
             messages={messages}
-            setValue={setValue}
             handleSubmit={handleSubmit}
           />
         </div>

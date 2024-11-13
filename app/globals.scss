@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.tiptap {
+  width: 100%;
+}
 body {
   font-family: "Space Grotesk", sans-serif;
   background-size: 40px 40px;
@@ -13,8 +16,21 @@ body {
     linear-gradient(to bottom, rgba(200, 200, 200, 0.2) 1px, transparent 1px);
 }
 
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}
+
 .material-symbols-rounded {
   font-variation-settings: "FILL" 0, "wght" 250, "GRAD" -25, "opsz" 24;
+}
+
+* {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .dark body {
@@ -127,3 +143,30 @@ textarea {
     @apply bg-background text-foreground;
   }
 }
+
+.Tiptap-mathematics-editor {
+  background: #202020;
+  color: #fff;
+  font-family: monospace;
+  padding: 0.2rem 0.5rem;
+}
+
+.Tiptap-mathematics-render {
+  padding: 0 0.25rem;
+
+  &--editable {
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #eee;
+    }
+  }
+}
+
+.Tiptap-mathematics-editor,
+.Tiptap-mathematics-render {
+  border-radius: 0.25rem;
+  display: inline-block;
+}
+
