@@ -1,12 +1,11 @@
+import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.scss";
 import "./typing.css";
-import relativeTime from "dayjs/plugin/relativeTime";
-import MathLoader from "./MathLoader";
-import { Toaster } from "@/components/ui/toaster";
-import Script from "next/script";
 dayjs.extend(relativeTime);
 
 const APP_NAME = "ElmasriAI";
