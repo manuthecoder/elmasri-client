@@ -1260,12 +1260,12 @@ export default function Page() {
           </div>
           <NoSSR>
             <MathLoader />
+            <SendMessage
+              editor={editor}
+              messages={messages}
+              handleSubmit={handleSubmit}
+            />
           </NoSSR>
-          <SendMessage
-            editor={editor}
-            messages={messages}
-            handleSubmit={handleSubmit}
-          />
         </div>
       </div>
     </TooltipProvider>
