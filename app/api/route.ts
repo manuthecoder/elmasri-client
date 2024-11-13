@@ -60,4 +60,3 @@ The course you will be teaching for this chat's context will be: ${course}. You 
     message: data.candidates[0]?.content?.parts[0]?.text,
   });
 }
-

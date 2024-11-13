@@ -43,6 +43,7 @@ import StarterKit from "@tiptap/starter-kit";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "katex/dist/katex.min.css"; // Import the Katex CSS file
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
@@ -53,9 +54,6 @@ import { Markdown as TipTapMarkdown } from "tiptap-markdown";
 import { DysperseAd } from "./DysperseAd";
 import { generateRandomString } from "./generateRandomString";
 import { Icon } from "./Icon";
-
-import dynamic from "next/dynamic";
-import { MathField } from "react-mathquill";
 
 const EditableMathField = dynamic(
   () => import("react-mathquill").then((mod) => mod.EditableMathField),
@@ -649,9 +647,7 @@ function EquationEditor({ editor }: any) {
         <div className="w-50 p-0 flex flex-col">
           <EditableMathField
             latex={latex}
-            onChange={(mathField) => {
-              setLatex(mathField.latex());
-            }}
+            onChange={(mathField) => setLatex(mathField.latex())}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
@@ -686,6 +682,7 @@ function SendMessage({ editor, messages, handleSubmit }: any) {
     const handleKeyDown = (e: any) => {
       if (
         editor &&
+        !e.ctrlKey &&
         !["TEXTAREA", "INPUT"].includes(
           document?.activeElement?.tagName || "-1"
         ) &&
@@ -1045,6 +1042,7 @@ const courseChips: any = {
 
 export default function Page() {
   const editor = useEditor({
+    immediatelyRender: true,
     extensions: [
       StarterKit,
       Mathematics,
@@ -1073,6 +1071,7 @@ export default function Page() {
       },
     },
   });
+
   const value = editor?.storage?.markdown?.getMarkdown?.();
 
   const scrollRef: any = useRef();
@@ -1275,8 +1274,11 @@ export default function Page() {
             handleSubmit={handleSubmit}
           />
         </div>
+        {/* to instantly load it! */}
+        <div style={{ display: "none" }}>
+          <EditableMathField />
+        </div>
       </div>
     </TooltipProvider>
   );
 }
-
