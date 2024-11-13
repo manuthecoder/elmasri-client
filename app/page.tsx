@@ -609,6 +609,7 @@ function EquationEditor({ editor }: any) {
             <Button
               className="bg-gray-100 dark:bg-neutral-800 px-2 text-black dark:text-white"
               variant="ghost"
+              id="functionsTrigger"
             >
               <Icon>function</Icon>
             </Button>
@@ -785,6 +786,76 @@ function History({
   );
 }
 
+function WelcomeModal() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!localStorage.getItem("welcomeModal")) {
+      setOpen(true);
+    }
+  }, []);
+
+  return (
+    <Dialog open={open}>
+      <DialogTrigger asChild>
+        <div className="hidden" />
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>What's new in v1.0.5</DialogTitle>
+        </DialogHeader>
+        <DialogDescription className="prose dark:prose-invert">
+          {[
+            {
+              icon: "mic",
+              text: "Call Mr. Elmasri!",
+              description:
+                "Too lazy to type? Click the mic icon to start speaking and click it again to stop.",
+            },
+            {
+              icon: "function",
+              text: "Insert equations",
+              description:
+                "Easily insert formulas & more by clicking the equation icon.",
+            },
+            {
+              icon: "special_character",
+              text: "Insert special characters",
+              description:
+                "Quickly add special characters by clicking on its icon",
+            },
+            {
+              icon: "history",
+              text: "Chat history",
+              description:
+                "Access chat history & continue previous conversations",
+            },
+          ].map(({ icon, text, description }) => (
+            <div className="flex gap-4 items-center" key={text}>
+              <div className="flex shrink-0 items-center justify-center w-10 h-10 bg-neutral-300 dark:bg-neutral-800 rounded-full">
+                <Icon className="text-black dark:text-white">{icon}</Icon>
+              </div>
+              <div>
+                <h4>{text}</h4>
+                <p>{description}</p>
+              </div>
+            </div>
+          ))}
+          <Button
+            className="mt-2 w-full"
+            onClick={() => {
+              localStorage.setItem("welcomeModal", "true");
+              setOpen(false);
+            }}
+          >
+            Awesome!
+          </Button>
+        </DialogDescription>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function AppMenu({
   newChat,
   course,
@@ -832,6 +903,7 @@ function AppMenu({
 
   return (
     <div className="flex items-center">
+      <WelcomeModal />
       <Menubar>
         <MenubarMenu>
           <MenubarTrigger
@@ -947,6 +1019,11 @@ export default function Page() {
         if (e.key === "/") {
           e.preventDefault();
           document.getElementById("symbolsTrigger")?.click();
+          return true;
+        }
+        if (e.key === "@") {
+          e.preventDefault();
+          document.getElementById("functionsTrigger")?.click();
           return true;
         }
       },
