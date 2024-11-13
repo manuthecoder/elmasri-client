@@ -804,52 +804,53 @@ function WelcomeModal() {
         <DialogHeader>
           <DialogTitle>What's new in v1.0.5</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="prose dark:prose-invert">
-          {[
-            {
-              icon: "mic",
-              text: "Call Mr. Elmasri!",
-              description:
-                "Too lazy to type? Click the mic icon to start speaking and click it again to stop.",
-            },
-            {
-              icon: "function",
-              text: "Insert equations",
-              description:
-                "Easily insert formulas & more by clicking the equation icon.",
-            },
-            {
-              icon: "special_character",
-              text: "Insert special characters",
-              description:
-                "Quickly add special characters by clicking on its icon",
-            },
-            {
-              icon: "history",
-              text: "Chat history",
-              description:
-                "Access chat history & continue previous conversations",
-            },
-          ].map(({ icon, text, description }) => (
-            <div className="flex gap-4 items-center" key={text}>
-              <div className="flex shrink-0 items-center justify-center w-10 h-10 bg-neutral-300 dark:bg-neutral-800 rounded-full">
-                <Icon className="text-black dark:text-white">{icon}</Icon>
-              </div>
-              <div>
-                <h4>{text}</h4>
-                <p>{description}</p>
-              </div>
-            </div>
-          ))}
-          <Button
-            className="mt-2 w-full"
-            onClick={() => {
-              localStorage.setItem("welcomeModal", "true");
-              setOpen(false);
-            }}
-          >
-            Awesome!
-          </Button>
+        <DialogDescription asChild className="prose dark:prose-invert">
+          <div>
+            {[
+              {
+                icon: "mic",
+                text: "Call Mr. Elmasri!",
+                description:
+                  "Too lazy to type? Click the mic icon to start speaking and click it again to stop.",
+              },
+              {
+                icon: "function",
+                text: "Insert equations",
+                description: "Press @ to quickly add formulas & more",
+              },
+              {
+                icon: "special_character",
+                text: "Insert special characters",
+                description:
+                  "Type / to insert special characters like Greek letters",
+              },
+              {
+                icon: "history",
+                text: "Chat history",
+                description:
+                  "Access chat history & continue previous conversations",
+              },
+            ].map(({ icon, text, description }) => (
+              <span className="flex gap-4 items-center" key={text}>
+                <span className="flex shrink-0 items-center justify-center w-10 h-10 bg-neutral-300 dark:bg-neutral-800 rounded-full">
+                  <Icon className="text-black dark:text-white">{icon}</Icon>
+                </span>
+                <span>
+                  <h4>{text}</h4>
+                  <p>{description}</p>
+                </span>
+              </span>
+            ))}
+            <Button
+              className="mt-2 w-full"
+              onClick={() => {
+                localStorage.setItem("welcomeModal", "true");
+                setOpen(false);
+              }}
+            >
+              Awesome!
+            </Button>
+          </div>
         </DialogDescription>
       </DialogContent>
     </Dialog>
@@ -924,6 +925,21 @@ function AppMenu({
               setMessages={setMessages}
             />
             <HowWasThisCreated isMenu />
+            <MenubarItem
+              onClick={() => {
+                if (
+                  confirm(
+                    "Are you sure you want to clear chat history and stored data?"
+                  )
+                ) {
+                  localStorage.clear();
+                  window.location.reload();
+                }
+              }}
+            >
+              <Icon className="mr-2">delete</Icon>
+              Permanently delete my data
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
 
