@@ -1274,10 +1274,6 @@ export default function Page() {
             handleSubmit={handleSubmit}
           />
         </div>
-        {/* to instantly load it! */}
-        <div style={{ display: "none" }}>
-          <EditableMathField />
-        </div>
       </div>
     </TooltipProvider>
   );
