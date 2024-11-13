@@ -5,7 +5,9 @@ import { addStyles } from "react-mathquill";
 
 export default function MathLoader() {
   useEffect(() => {
-    addStyles();
+    if (typeof window !== "undefined") {
+      addStyles();
+    }
   }, []);
   return null;
 }
