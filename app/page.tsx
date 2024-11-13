@@ -123,6 +123,7 @@ function SymbolPicker({ editor }: { editor: any }) {
   const [open, setOpen] = useState(false);
 
   const symbols = [
+    { symbol: "/", name: "Slash" },
     { symbol: "𝐹", name: "Force" },
     { symbol: "𝐸", name: "Electrical field" },
     { symbol: "𝐵", name: "Magnetic field" },
@@ -167,6 +168,7 @@ function SymbolPicker({ editor }: { editor: any }) {
     { symbol: "″", name: "Double prime" },
     { symbol: "ℏ", name: "Reduced Planck constant" },
     { symbol: "𝜑", name: "Magnetic flux" },
+    { symbol: "@", name: "At symbol" },
   ].filter((t) => t.name.toLowerCase().includes(query.toLowerCase()));
 
   const handlePress = (symbol: string) => {
