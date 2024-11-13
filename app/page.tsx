@@ -169,6 +169,15 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
     }, 10);
   };
 
+  useEffect(() => {
+    document
+      .querySelector(`[data-index="${currentlySelected}"]`)
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+  }, [currentlySelected]);
+
   return (
     <Popover
       onOpenChange={(open) => {
@@ -222,23 +231,19 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
                 setCurrentlySelected((t) => Math.max(0, t - 1));
               } else if (e.key === "ArrowRight") {
                 e.preventDefault();
-
                 setCurrentlySelected((t) =>
                   Math.min(symbols.length - 1, t + 1)
                 );
               } else if (e.key === "ArrowDown") {
                 e.preventDefault();
-
                 setCurrentlySelected((t) =>
                   Math.min(symbols.length - 1, t + 3)
                 );
               } else if (e.key === "ArrowUp") {
                 e.preventDefault();
-
                 setCurrentlySelected((t) => Math.max(0, t - 3));
               } else if (e.key === "Enter") {
                 e.preventDefault();
-
                 handlePress(symbols[currentlySelected].symbol);
               }
             }}
@@ -256,9 +261,12 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
           {symbols.map((symbol, index) => (
             <div
               key={symbol.name}
+              data-index={index}
               onClick={() => handlePress(symbol.symbol)}
-              className={`justify-start hover:bg-gray-100 active:bg-gray-200 border border-transparent dark:hover:bg-gray-900 dark:active:bg-gray-800 p-2 rounded-xl ${
-                currentlySelected === index ? "bg-gray-100 border-gray-400" : ""
+              className={`justify-start hover:bg-neutral-100 active:bg-neutral-200 border border-transparent dark:bg-neutral-950 dark:hover:bg-neutral-900 dark:active:bg-neutral-800 p-2 rounded-xl ${
+                currentlySelected === index
+                  ? "bg-neutral-100 border-neutral-400 dark:bg-neutral-900 dark:border-neutral-400"
+                  : ""
               }`}
             >
               <span className="katex" style={{ fontSize: 30 }}>
@@ -268,7 +276,7 @@ function SymbolPicker({ handleSubmit, setValue, inputRef }: any) {
             </div>
           ))}
         </div>
-        <p className="text-xs prose p-4">
+        <p className="text-xs prose p-4 dark:prose-invert">
           <kbd>Arrow keys</kbd> to move, <kbd>enter</kbd> to select
         </p>
       </PopoverContent>
@@ -1070,3 +1078,4 @@ export default function Page() {
     </TooltipProvider>
   );
 }
+
