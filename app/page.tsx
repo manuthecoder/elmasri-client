@@ -1104,9 +1104,10 @@ export default function Page() {
   const [messages, setMessages] = useState<any>(defaultMessages);
 
   useEffect(() => {
-    import("react-mathquill").then((mq) => {
-      mq.addStyles();
-    });
+    if (typeof document !== "undefined" && typeof window !== "undefined")
+      import("react-mathquill").then((mq) => {
+        mq.addStyles();
+      });
   }, []);
 
   useEffect(() => {
