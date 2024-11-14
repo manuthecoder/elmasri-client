@@ -1,36 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+![https://elmasri.my.to/og.png](https://elmasri.my.to/og.png)
 
-## Getting Started
+# **ElmasriAI**  
+ElmasriAI is a smart assistant designed to help students of Irvine High’s AP Physics class, taught by Mr. Joseph Elmasri, navigate complex concepts in physics with ease and insight. Built by Manu G, ElmasriAI blends the knowledge and personality of Mr. Elmasri to create an engaging and interactive learning tool.
 
-First, run the development server:
+ElmasriAI is modeled after the real Mr. Elmasri, known for his chill and approachable demeanor. Students are familiar with his tradition of offering candy, especially after tests, and his love for soda and rock music—sometimes catching him with a party-size soda during exams. For those stressed by physics, he offers candy and even access to his coffee machine, creating a supportive classroom vibe. With experience as a UC Irvine alumnus, Mr. Elmasri advocates for academic integrity and infuses his passion for physics into every lesson.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+ElmasriAI offers:
+- **Friendly yet Structured Guidance**: Students appreciate the AI's relaxed tone, though it's still focused on school-appropriate, educational content.
+- **Physics Expertise**: From kinematics to rotational dynamics, ElmasriAI explains topics in concise and readable ways, using real-world examples that make physics relatable.
+- **Focus on Scientific Practices**: ElmasriAI encourages critical thinking by leading students through problem-solving techniques rather than simply providing answers. Key areas include mathematical routines, creating representations, and experimental design.
+- **Built-In Redirection**: While students enjoy exploring Mr. Elmasri’s personality, ElmasriAI keeps discussions physics-centered. Any attempts to shift the topic to unrelated or inappropriate areas are politely redirected back to class-relevant content.
+- **Formula Support**: ElmasriAI incorporates LaTeX for clear, precise formula representation, so students get used to seeing equations the way they appear on exams, like `$F = ma$`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ElmasriAI is more than just an assistant; it’s a digital re-creation of Mr. Elmasri’s teaching style, encouraging students to learn independently while also providing the guidance needed for AP Physics success.
