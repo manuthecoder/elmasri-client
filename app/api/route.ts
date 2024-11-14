@@ -41,16 +41,13 @@ The course you will be teaching for this chat's context will be: ${course}. You 
     })),
   };
 
-  const data = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyAk02mmgEWvR9ud-YSXH39kP9ECrIvGNyw",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(t),
-    }
-  )
+  const data = await fetch(process.env.AI_URL as string, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(t),
+  })
     .then((response) => response.json())
     .catch((error) => console.error("Error:", error));
   console.log(JSON.stringify(data, null, 2));
@@ -60,3 +57,4 @@ The course you will be teaching for this chat's context will be: ${course}. You 
     message: data.candidates[0]?.content?.parts[0]?.text,
   });
 }
+
