@@ -1042,7 +1042,7 @@ const courseChips: any = {
 
 export default function Page() {
   const editor = useEditor({
-    immediatelyRender: true,
+    // immediatelyRender: true,
     extensions: [
       StarterKit,
       Mathematics,
