@@ -1,8 +1,8 @@
 import { NodeViewWrapper } from "@tiptap/react";
 import { useContext, useEffect, useRef } from "react";
 import { addStyles, EditableMathField } from "react-mathquill";
-import { MessageBarContext } from "../MessageBarContext";
 import { toast } from "@/hooks/use-toast";
+import { MessageBarContext } from "../MessageBarContext";
 
 addStyles();
 
@@ -11,7 +11,9 @@ function Focuser() {
 
   useEffect(() => {
     setTimeout(() => {
-      console.log(ref.current.parentElement.querySelector("textarea").focus());
+      console.log(
+        (ref as any).current.parentElement.querySelector("textarea").focus()
+      );
     }, 1);
   }, []);
 
@@ -20,7 +22,7 @@ function Focuser() {
 
 export default (props: any) => {
   const content = props.node.attrs.content;
-  const { setOpen } = useContext(MessageBarContext);
+  const { setOpen } = useContext(MessageBarContext) as any;
 
   return (
     <NodeViewWrapper className="inline-math">
