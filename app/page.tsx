@@ -42,7 +42,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import "katex/dist/katex.min.css"; // Import the Katex CSS file
+import "katex/dist/katex.min.css";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -1002,7 +1002,6 @@ function AppMenu({
             <Icon className="sm:ml-2">add</Icon>
           </MenubarTrigger>
         </MenubarMenu>
-
         <PwaInstaller />
       </Menubar>
     </div>
@@ -1034,7 +1033,6 @@ const courseChips: any = {
 
 export default function Page() {
   const editor = useEditor({
-    // immediatelyRender: true,
     extensions: [
       StarterKit,
       Mathematics,
