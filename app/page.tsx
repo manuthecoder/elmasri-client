@@ -45,7 +45,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "katex/dist/katex.min.css";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { createContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import { usePWAInstall } from "react-use-pwa-install";
 import rehypeKatex from "rehype-katex";
@@ -55,8 +55,7 @@ import { DysperseAd } from "./DysperseAd";
 import { generateRandomString } from "./generateRandomString";
 import { Icon } from "./Icon";
 import InlineMath from "./TextEditor/InlineMath";
-
-export const MessageBarContext = createContext({});
+import { MessageBarContext } from "./MessageBarContext";
 
 const EditableMathField = dynamic(
   () => import("react-mathquill").then((mod) => mod.EditableMathField),

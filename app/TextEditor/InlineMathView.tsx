@@ -1,7 +1,7 @@
 import { NodeViewWrapper } from "@tiptap/react";
 import { useContext, useEffect, useRef } from "react";
 import { addStyles, EditableMathField } from "react-mathquill";
-import { MessageBarContext } from "../page";
+import { MessageBarContext } from "../MessageBarContext";
 import { toast } from "@/hooks/use-toast";
 
 addStyles();
