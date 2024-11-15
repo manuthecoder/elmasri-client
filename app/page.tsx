@@ -426,34 +426,26 @@ function HowWasThisCreated({ isMenu }: any) {
 }
 
 function Message({
-  ad,
-  chips,
-  from,
+  message,
   sendMessage,
-  loading,
-  content,
   hideUser,
   course,
-  messages,
-  finishReason,
-  safetyRatings,
   messageIndex,
-  setMessages,
   handleSubmit,
 }: any) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedContent, setEditedContent] = useState(content);
+  const [editedContent, setEditedContent] = useState(message.content);
 
   return (
     <div
       className="flex flex-row items-end gap-2"
-      style={{ marginLeft: from === "AI" ? undefined : "auto" }}
+      style={{ marginLeft: message.from === "AI" ? undefined : "auto" }}
     >
       {hideUser ? (
         <div className="w-[40px] h-8 shrink-0" />
       ) : (
         <div className="w-[40px] h-[40px] shrink-0">
-          {from === "AI" ? (
+          {message.from === "AI" ? (
             <Image
               alt="ElmasriAI"
               src="/elmasri/1.png"
@@ -466,7 +458,7 @@ function Message({
           )}
         </div>
       )}
-      {from === "USER" && !chips && !isEditing && (
+      {message.from === "USER" && !message.chips && !isEditing && (
         <Button
           variant="ghost"
           className="px-0 opacity-40"
@@ -478,30 +470,30 @@ function Message({
       <div
         className={
           `bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg prose prose-neutral ` +
-          (from === "USER"
+          (message.from === "USER"
             ? "prose-invert text-green-100"
             : "dark:prose-invert")
         }
         style={
-          from === "AI"
+          message.from === "AI"
             ? {
                 borderBottomLeftRadius: !hideUser ? 0 : "1rem",
               }
             : {
                 borderBottomRightRadius: !hideUser ? 0 : "1rem",
-                background: chips ? "transparent" : "#2f7c57",
+                background: message.chips ? "transparent" : "#2f7c57",
                 textAlign: "right",
               }
         }
       >
         <div className="text-sm">
-          {loading ? (
+          {message.loading ? (
             <div className="typing">
               <span></span>
               <span></span>
               <span></span>
             </div>
-          ) : chips ? (
+          ) : message.chips ? (
             <div className="flex flex-col gap-1">
               {courseChips[course].map((chip: string) => (
                 <Button
@@ -523,7 +515,7 @@ function Message({
               ))}
               <HowWasThisCreated />
             </div>
-          ) : ad ? (
+          ) : message.ad ? (
             <DysperseAd />
           ) : (
             <div className="prose-sm">
@@ -549,10 +541,10 @@ function Message({
                   remarkPlugins={[remarkMath]}
                   rehypePlugins={[rehypeKatex]}
                 >
-                  {content}
+                  {message.content}
                 </Markdown>
               )}
-              {finishReason === "SAFETY" && (
+              {message.finishReason === "SAFETY" && (
                 <div>
                   <span className="text-xs text-red-500 dark:text-red-400">
                     This response was flagged as potentially unsafe
@@ -560,8 +552,8 @@ function Message({
                   <p className="m-0">
                     Sorry, I can't provide that information. Please ask me
                     something else. Error codes:{" "}
-                    {safetyRatings &&
-                      safetyRatings
+                    {message.safetyRatings &&
+                      message.safetyRatings
                         .filter(
                           (rating: any) =>
                             !["NEGLIGIBLE"].includes(rating.probability)
@@ -597,7 +589,7 @@ function MessageList({
           course={course}
           sendMessage={sendMessage}
           key={index}
-          {...message}
+          message={message}
           hideUser={
             index + 1 < messages.length &&
             messages[index + 1].from === message.from
