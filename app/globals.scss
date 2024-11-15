@@ -170,3 +170,26 @@ textarea {
   display: inline-block;
 }
 
+.inline-math {
+  cursor: pointer;
+  display: inline-block;
+}
+.inline-math span:empty::before {
+  content: "Tap to add equation";
+  padding-left: 6px;
+  font-size: 12px;
+  color: black;
+  font-family: "Space Grotesk", sans-serif;
+}
+.mq-editable-field, .mq-math-mode .mq-editable-field {
+  background-color: rgba(200, 200, 200, 0.3);
+  border: none !important;
+  border-radius: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.node-inlineMath.ProseMirror-selectednode .inline-math {
+  background-color: #2f7c57;
+  color: #fff;
+}
