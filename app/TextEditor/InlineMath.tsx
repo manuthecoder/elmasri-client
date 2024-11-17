@@ -1,4 +1,4 @@
-import { mergeAttributes, Node } from "@tiptap/core";
+import { Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import InlineMathView from "./InlineMathView";
 
@@ -59,3 +59,4 @@ export default Node.create({
     };
   },
 });
+

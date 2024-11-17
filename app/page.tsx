@@ -43,7 +43,6 @@ import StarterKit from "@tiptap/starter-kit";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "katex/dist/katex.min.css";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
@@ -54,13 +53,9 @@ import { Markdown as TipTapMarkdown } from "tiptap-markdown";
 import { DysperseAd } from "./DysperseAd";
 import { generateRandomString } from "./generateRandomString";
 import { Icon } from "./Icon";
-import InlineMath from "./TextEditor/InlineMath";
 import { MessageBarContext } from "./MessageBarContext";
 
-const EditableMathField = dynamic(
-  () => import("react-mathquill").then((mod) => mod.EditableMathField),
-  { ssr: false }
-);
+import InlineMath from "./TextEditor/InlineMath";
 
 dayjs.extend(relativeTime);
 
@@ -1276,3 +1271,4 @@ export default function Page() {
     </TooltipProvider>
   );
 }
+

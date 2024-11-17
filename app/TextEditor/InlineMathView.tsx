@@ -1,10 +1,13 @@
 import { NodeViewWrapper } from "@tiptap/react";
+import dynamic from "next/dynamic";
 import { useContext, useEffect, useRef } from "react";
-import { addStyles, EditableMathField } from "react-mathquill";
-import { toast } from "@/hooks/use-toast";
+import { addStyles } from "react-mathquill";
 import { MessageBarContext } from "../MessageBarContext";
 
-addStyles();
+const EditableMathField = dynamic(
+  () => import("react-mathquill").then((mod) => mod.EditableMathField),
+  { ssr: false }
+);
 
 function Focuser() {
   const ref = useRef(null);
@@ -56,3 +59,4 @@ export default (props: any) => {
     </NodeViewWrapper>
   );
 };
+
