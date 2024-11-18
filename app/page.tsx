@@ -56,6 +56,7 @@ import { Icon } from "./Icon";
 import { MessageBarContext } from "./MessageBarContext";
 
 import InlineMath from "./TextEditor/InlineMath";
+import { captureMessage } from "@sentry/nextjs";
 
 dayjs.extend(relativeTime);
 
@@ -1201,6 +1202,7 @@ export default function Page() {
       })
       .catch((err) => {
         console.error(err);
+        captureMessage(err);
         setMessages(
           messageIndex
             ? messages
@@ -1271,4 +1273,3 @@ export default function Page() {
     </TooltipProvider>
   );
 }
-
