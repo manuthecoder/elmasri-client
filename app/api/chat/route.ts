@@ -1,4 +1,6 @@
+import { google } from "@ai-sdk/google";
 import { NextRequest } from "next/server";
+import { streamText } from "ai";
 
 export const dynamic = "force-dynamic";
 export const OPTIONS = async () => {
@@ -11,6 +13,13 @@ export const OPTIONS = async () => {
 export async function POST(req: NextRequest) {
   // Get message from request body
   const { messages, course } = await req.json();
+
+  console.log(messages);
+
+  const result = await streamText({
+    model: google("gemini-1.5-flash"),
+    messages: messages.filter((e: any) => !e.chips && e.content),
+  });
 
   const t = {
     system_instruction: {
@@ -35,12 +44,7 @@ The course you will be teaching for this chat's context will be: ${course}. You 
         },
       ],
     },
-    contents: messages.map((m: any) => ({
-      role: m.from === "AI" ? "model" : "user",
-      parts: [{ text: m.content }],
-    })),
   };
-
   const data = await fetch(process.env.AI_URL as string, {
     method: "POST",
     headers: {
@@ -51,10 +55,6 @@ The course you will be teaching for this chat's context will be: ${course}. You 
     .then((response) => response.json())
     .catch((error) => console.error("Error:", error));
   console.log(JSON.stringify(data, null, 2));
-  return Response.json({
-    safetyRatings: data.candidates[0].safetyRatings,
-    finishReason: data.candidates[0].finishReason,
-    message: data.candidates[0]?.content?.parts[0]?.text,
-  });
-}
 
+  return result.toDataStreamResponse();
+}

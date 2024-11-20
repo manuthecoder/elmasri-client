@@ -54,7 +54,7 @@ import { DysperseAd } from "./DysperseAd";
 import { generateRandomString } from "./generateRandomString";
 import { Icon } from "./Icon";
 import { MessageBarContext } from "./MessageBarContext";
-
+import { useChat, UseChatHelpers } from "ai/react";
 import InlineMath from "./TextEditor/InlineMath";
 import { captureMessage } from "@sentry/nextjs";
 
@@ -437,13 +437,13 @@ function Message({
   return (
     <div
       className="flex flex-row items-end gap-2"
-      style={{ marginLeft: message.from === "AI" ? undefined : "auto" }}
+      style={{ marginLeft: message.role === "assistant" ? undefined : "auto" }}
     >
       {hideUser ? (
         <div className="w-[40px] h-8 shrink-0" />
       ) : (
         <div className="w-[40px] h-[40px] shrink-0">
-          {message.from === "AI" ? (
+          {message.role === "assistant" ? (
             <Image
               alt="ElmasriAI"
               src="/elmasri/1.png"
@@ -456,7 +456,7 @@ function Message({
           )}
         </div>
       )}
-      {message.from === "USER" && !message.chips && !isEditing && (
+      {message.role === "user" && !message.chips && !isEditing && (
         <Button
           variant="ghost"
           className="px-0 opacity-40"
@@ -468,12 +468,12 @@ function Message({
       <div
         className={
           `bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg prose prose-neutral ` +
-          (message.from === "USER"
+          (message.role === "user"
             ? "prose-invert text-green-100"
             : "dark:prose-invert")
         }
         style={
-          message.from === "AI"
+          message.role === "assistant"
             ? {
                 borderBottomLeftRadius: !hideUser ? 0 : "1rem",
               }
@@ -572,7 +572,7 @@ function Message({
 function MessageList({
   handleSubmit,
   messages,
-  setMessages,
+  chatControl,
   sendMessage,
   course,
 }: any) {
@@ -583,14 +583,14 @@ function MessageList({
           messages={messages}
           messageIndex={index}
           handleSubmit={handleSubmit}
-          setMessages={setMessages}
+          chatControl={chatControl}
           course={course}
           sendMessage={sendMessage}
           key={index}
           message={message}
           hideUser={
             index + 1 < messages.length &&
-            messages[index + 1].from === message.from
+            messages[index + 1].role === message.role
           }
         />
       ))}
@@ -747,11 +747,11 @@ function PwaInstaller() {
 function History({
   conversationId,
   setConversationId,
-  setMessages,
+  chatControl,
 }: {
   conversationId: any;
   setConversationId: any;
-  setMessages: any;
+  chatControl: UseChatHelpers;
 }) {
   return (
     <>
@@ -781,7 +781,7 @@ function History({
                 key={key}
                 onClick={() => {
                   setConversationId(value.conversationId);
-                  setMessages(value.messages);
+                  chatControl.setMessages(value.messages);
                 }}
               >
                 <div>
@@ -881,7 +881,7 @@ function AppMenu({
   setCourse,
   conversationId,
   setConversationId,
-  setMessages,
+  chatControl,
 }: any) {
   const [darkMode, setDarkMode] = useState(false);
 
@@ -941,7 +941,7 @@ function AppMenu({
             <History
               conversationId={conversationId}
               setConversationId={setConversationId}
-              setMessages={setMessages}
+              chatControl={chatControl}
             />
             <HowWasThisCreated isMenu />
             <MenubarItem
@@ -1033,6 +1033,14 @@ const courseChips: any = {
   ],
 };
 
+const ErrorComponent = () => {
+  return (
+    <div className="text-red-900 bg-red-100 dark:bg-red-900 dark:text-red-50 mb-2 text-xs px-4 py-2 rounded text-center">
+      Something went wrong &mdash; Please try again later
+    </div>
+  );
+};
+
 export default function Page() {
   const editor = useEditor({
     extensions: [
@@ -1066,27 +1074,26 @@ export default function Page() {
   });
 
   const value = editor?.storage?.markdown?.getMarkdown?.();
-
   const scrollRef: any = useRef();
   const [course, setCourse] = useState<any>("AP Physics 1: Algebra-Based");
 
   const defaultMessages = [
     {
-      from: "AI",
+      role: "assistant",
       content:
         "👋 Well, hello there. I'm Mr. Elmasri 🥸 with my essence craftfully captured through the power of Artificial Intelligence 🤖",
     },
     {
-      from: "AI",
+      role: "assistant",
       content:
         "Sometimes I can generate inaccurate responses, so double check! I'm trained on the Official CollegeBoard AP Physics Course and Exam Descriptions, Lab Manuals, and other resources. Use this tool responsibly 📚",
     },
     {
-      from: "AI",
+      role: "assistant",
       content: "How can I help you with Physics today? 🫵",
     },
     {
-      from: "USER",
+      role: "user",
       chips: true,
     },
   ];
@@ -1094,7 +1101,12 @@ export default function Page() {
   const [conversationId, setConversationId] = useState<any>(
     generateRandomString(50)
   );
-  const [messages, setMessages] = useState<any>(defaultMessages);
+  // const [messages, chatControl] = useState<any>(defaultMessages);
+  const chatControl = useChat({
+    initialMessages: defaultMessages as any,
+  });
+
+  const { messages, input, setInput, append, error } = chatControl;
 
   useEffect(() => {
     if (typeof document !== "undefined" && typeof window !== "undefined")
@@ -1102,11 +1114,10 @@ export default function Page() {
         mq.addStyles();
       });
   }, []);
-
   useEffect(() => {
     const chatHistory = localStorage.getItem("chatHistory");
     const history = JSON.parse(chatHistory || "{}");
-    if (messages.find((e: any) => e.from === "USER" && !e.chips))
+    if (messages.find((e: any) => e.role === "assistant"))
       localStorage.setItem(
         "chatHistory",
         JSON.stringify({
@@ -1127,97 +1138,25 @@ export default function Page() {
 
   const newChat = () => {
     setConversationId(generateRandomString(50));
-    setMessages(defaultMessages);
+    // chatControl(defaultMessages);
   };
 
   const handleSubmit = async (a: string, messageIndex?: any) => {
     if (!value.trim() && !a) return;
-    setMessages(
-      messageIndex
-        ? [
-            ...messages.slice(0, messageIndex),
-            { from: "USER", content: a || value },
-            { from: "AI", loading: true },
-          ]
-        : [
-            ...messages,
-            { from: "USER", content: a || value },
-            { from: "AI", loading: true },
-          ].filter((e) => !e.chips)
-    );
-
-    await fetch(
-      process.env.NODE_ENV === "production"
-        ? "https://elmasri-client.vercel.app/api"
-        : "/api",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          course,
-          messages: messageIndex
-            ? [
-                ...messages.slice(0, messageIndex),
-                { from: "USER", content: a || value },
-              ].filter((e) => !e.chips && !e.ad)
-            : [...messages, { from: "USER", content: a || value }].filter(
-                (e) => !e.chips && !e.ad
-              ),
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        setMessages(
-          messageIndex
-            ? [
-                ...messages.slice(0, messageIndex),
-                { from: "USER", content: a || value },
-                {
-                  from: "AI",
-                  content: res.message,
-                  finishReason: res.finishReason,
-                  safetyRatings: res.safetyRatings,
-                },
-                ...(!messages.find((e: any) => e.ad)
-                  ? [{ from: "AI", ad: true, content: res.ad }]
-                  : []),
-              ]
-            : [
-                ...messages,
-                { from: "USER", content: a || value },
-                {
-                  from: "AI",
-                  content: res.message,
-                  finishReason: res.finishReason,
-                  safetyRatings: res.safetyRatings,
-                },
-                ...(!messages.find((e: any) => e.ad)
-                  ? [{ from: "AI", ad: true, content: res.ad }]
-                  : []),
-              ]
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-        captureMessage(err);
-        setMessages(
-          messageIndex
-            ? messages
-            : [
-                ...messages,
-                { from: "USER", content: a || value },
-                {
-                  from: "AI",
-                  error: true,
-                  content:
-                    "Yikes! Something went wrong. Most likely, I might be in high demand, but I've reported the error to Manu. Try again later.",
-                },
-              ]
-        );
-      });
+    // chatControl(
+    //   messageIndex
+    //     ? [
+    //         ...messages.slice(0, messageIndex),
+    //         { from: "USER", content: a || value },
+    //         { from: "AI", loading: true },
+    //       ]
+    //     : [
+    //         ...messages,
+    //         { from: "USER", content: a || value },
+    //         { from: "AI", loading: true },
+    //       ].filter((e) => !e.chips)
+    // );
+    append({ content: value, role: "user" });
     editor?.commands.setContent("");
   };
 
@@ -1245,7 +1184,7 @@ export default function Page() {
             newChat={newChat}
             conversationId={conversationId}
             setConversationId={setConversationId}
-            setMessages={setMessages}
+            chatControl={chatControl}
           />
           <div
             ref={scrollRef}
@@ -1257,12 +1196,14 @@ export default function Page() {
               <MessageList
                 handleSubmit={handleSubmit}
                 course={course}
-                setMessages={setMessages}
+                // chatControl={chatControl}
+                chatControl={chatControl}
                 sendMessage={(a: any) => handleSubmit(a)}
                 messages={messages}
               />
             </div>
           </div>
+          {error && <ErrorComponent />}
           <SendMessage
             editor={editor}
             messages={messages}
