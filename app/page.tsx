@@ -82,13 +82,11 @@ export default function Page() {
   );
   const chatControl = useChat({
     initialMessages: defaultMessages as any,
+    body: { course },
     api:
       process.env.NODE_ENV === "development"
         ? undefined
         : "https://elmasri.my.to/api/chat",
-    body: {
-      course,
-    },
   });
 
   const { messages, append, error } = chatControl;
