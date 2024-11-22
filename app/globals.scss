@@ -5,6 +5,9 @@
 .tiptap {
   width: 100%;
 }
+img {
+  user-select: none;
+}
 body {
   font-family: "Space Grotesk", sans-serif;
   background-size: 40px 40px;
