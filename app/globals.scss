@@ -181,7 +181,11 @@ textarea {
   color: black;
   font-family: "Space Grotesk", sans-serif;
 }
-.mq-editable-field, .mq-math-mode .mq-editable-field {
+.dark .inline-math span:empty::before {
+  color: white;
+}
+.mq-editable-field,
+.mq-math-mode .mq-editable-field {
   background-color: rgba(200, 200, 200, 0.3);
   border: none !important;
   border-radius: 10px;
@@ -193,3 +197,4 @@ textarea {
   background-color: #2f7c57;
   color: #fff;
 }
+

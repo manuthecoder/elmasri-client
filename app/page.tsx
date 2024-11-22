@@ -93,6 +93,7 @@ export default function Page() {
         mq.addStyles();
       });
   }, []);
+
   useEffect(() => {
     const chatHistory = localStorage.getItem("chatHistory");
     const history = JSON.parse(chatHistory || "{}");

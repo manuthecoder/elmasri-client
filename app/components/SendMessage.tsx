@@ -67,7 +67,7 @@ export function SendMessage({ editor, messages, handleSubmit }: any) {
               { key: "/", description: "Fraction" },
               { key: "^", description: "Exponent" },
               { key: "*", description: "Multiplication" },
-              { key: "sqrt()", description: "Square root" },
+              { key: "sqrt", description: "Square root" },
             ].map((item) =>
               item.divider ? (
                 <div className="border-b mb-2" key={Math.random()} />

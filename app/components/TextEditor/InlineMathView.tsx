@@ -1,13 +1,7 @@
 import { NodeViewWrapper } from "@tiptap/react";
-import dynamic from "next/dynamic";
 import { useContext, useEffect, useRef } from "react";
-import { addStyles } from "react-mathquill";
 import { MessageBarContext } from "../../MessageBarContext";
-
-const EditableMathField = dynamic(
-  () => import("react-mathquill").then((mod) => mod.EditableMathField),
-  { ssr: false }
-);
+import { EditableMathField } from "react-mathquill";
 
 function Focuser() {
   const ref = useRef(null);
@@ -15,7 +9,7 @@ function Focuser() {
   useEffect(() => {
     setTimeout(() => {
       console.log(
-        (ref as any).current.parentElement.querySelector("textarea").focus()
+        (ref as any).current.parentElement.querySelector("textarea")?.focus()
       );
     }, 1);
   }, []);
