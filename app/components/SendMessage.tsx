@@ -24,6 +24,9 @@ export function SendMessage({ editor, messages, handleSubmit }: any) {
       if (
         editor &&
         !e.ctrlKey &&
+        !e.altKey &&
+        !e.shiftKey &&
+        e.key !== "Tab" &&
         !["TEXTAREA", "INPUT"].includes(
           document?.activeElement?.tagName || "-1"
         ) &&
@@ -109,4 +112,3 @@ export function SendMessage({ editor, messages, handleSubmit }: any) {
     </MessageBarContext.Provider>
   );
 }
-
