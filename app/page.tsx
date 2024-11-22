@@ -22,6 +22,7 @@ dayjs.extend(relativeTime);
 
 export default function Page() {
   const editor = useEditor({
+    // immediatelyRender: true,
     extensions: [
       StarterKit,
       Mathematics,
@@ -198,4 +199,3 @@ export default function Page() {
     </TooltipProvider>
   );
 }
-

@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import "katex/dist/katex.min.css";
 import Image from "next/image";
 import { useState } from "react";
 import Markdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import { HowWasThisCreated } from "./HowWasThisCreated";
-import { DysperseAd } from "./DysperseAd";
+import remarkGfm from "remark-gfm";
 import { Icon } from "../Icon";
-import rehypeRaw from "rehype-raw";
+import { DysperseAd } from "./DysperseAd";
+import { HowWasThisCreated } from "./HowWasThisCreated";
 
 const courseChips: any = {
   "AP Physics 1: Algebra-Based": [
@@ -155,8 +156,8 @@ export function Message({
                 </div>
               ) : (
                 <Markdown
-                  remarkPlugins={[remarkMath]}
-                  rehypePlugins={[rehypeKatex, rehypeRaw]}
+                  remarkPlugins={[remarkGfm, remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
                 >
                   {message.content}
                 </Markdown>
@@ -187,4 +188,3 @@ export function Message({
     </div>
   );
 }
-
