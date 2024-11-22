@@ -104,7 +104,6 @@ export function AppMenu({
               setConversationId={setConversationId}
               chatControl={chatControl}
             />
-            <HowWasThisCreated isMenu />
             <MenubarItem
               onClick={() => {
                 if (
@@ -119,6 +118,15 @@ export function AppMenu({
             >
               <Icon className="mr-2">delete</Icon>
               Permanently delete my data
+            </MenubarItem>
+            <HowWasThisCreated isMenu />
+            <MenubarItem
+              onClick={() => {
+                window.open("https://github.com/manuthecoder/elmasri-client");
+              }}
+            >
+              <Icon className="mr-2">code</Icon>
+              Open source
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
