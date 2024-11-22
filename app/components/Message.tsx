@@ -138,7 +138,7 @@ export function Message({
                     className="w-full"
                     onClick={() => {
                       setIsEditing(false);
-                      handleSubmit(editedContent, messageIndex);
+                      handleSubmit(editedContent, messageIndex, editedContent);
                     }}
                   >
                     Save

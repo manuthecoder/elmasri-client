@@ -85,7 +85,7 @@ export default function Page() {
     initialMessages: defaultMessages as any,
   });
 
-  const { messages, input, setInput, append, error } = chatControl;
+  const { messages, append, error } = chatControl;
 
   useEffect(() => {
     if (typeof document !== "undefined" && typeof window !== "undefined")
@@ -121,9 +121,23 @@ export default function Page() {
     chatControl.setMessages(defaultMessages as any);
   };
 
-  const handleSubmit = async (a: string, messageIndex?: any) => {
+  const handleSubmit = async (
+    a: string,
+    messageIndex?: any,
+    newData?: string
+  ) => {
     if (!value.trim() && !a) return;
-    append({ content: value, role: "user" });
+    if (messageIndex && newData) {
+      const updatedMessages = [...messages];
+      updatedMessages[messageIndex] = {
+        ...updatedMessages[messageIndex],
+        content: newData,
+      };
+      chatControl.setMessages(updatedMessages);
+      chatControl.reload();
+    } else {
+      append({ content: value, role: "user" });
+    }
     editor?.commands.setContent("");
   };
 

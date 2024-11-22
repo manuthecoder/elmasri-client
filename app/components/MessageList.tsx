@@ -1,3 +1,4 @@
+import { UseChatHelpers } from "ai/react";
 import { Message } from "./Message";
 
 export function MessageList({
@@ -6,7 +7,13 @@ export function MessageList({
   chatControl,
   sendMessage,
   course,
-}: any) {
+}: {
+  handleSubmit: any;
+  messages: any;
+  chatControl: UseChatHelpers;
+  sendMessage: any;
+  course: any;
+}) {
   return (
     <div className="flex flex-col flex-1 gap-2">
       {messages.map((message: any, index: any) => (
@@ -25,6 +32,9 @@ export function MessageList({
           }
         />
       ))}
+      {chatControl.isLoading && (
+        <Message message={{ role: "assistant", loading: true, content: "" }} />
+      )}
     </div>
   );
 }
