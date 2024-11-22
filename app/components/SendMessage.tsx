@@ -11,15 +11,30 @@ import { SymbolPicker } from "./SymbolPicker";
 import { Icon } from "../Icon";
 import { MessageBarContext } from "../MessageBarContext";
 import { EquationEditor } from "./EquationEditor";
+import Turnstile, { useTurnstile } from "react-turnstile";
 
 export function SendMessage({ editor, messages, handleSubmit }: any) {
   const [open, setOpen] = useState(false);
+  const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     if (editor) setTimeout(() => editor.view.dom.focus(), 100);
   }, [editor]);
 
   const value = editor?.storage?.markdown?.getMarkdown?.();
+  if (!verified) {
+    return (
+      <div className="flex overflow-hidden justify-center bg-neutral-50 dark:bg-neutral-950 rounded-md border border-input text-sm shadow-sm">
+        <Turnstile
+          fixedSize
+          size="flexible"
+          sitekey="0x4AAAAAAA0sEd4bH3KwI7wD"
+          style={{ borderRight: "1px solid #e4e4e4" }}
+          onVerify={(token) => setVerified(token as any)}
+        />
+      </div>
+    );
+  }
   if (!editor) return null;
 
   return (
