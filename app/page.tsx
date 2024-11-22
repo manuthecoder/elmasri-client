@@ -80,7 +80,6 @@ export default function Page() {
   const [conversationId, setConversationId] = useState<any>(
     generateRandomString(50)
   );
-  // const [messages, chatControl] = useState<any>(defaultMessages);
   const chatControl = useChat({
     initialMessages: defaultMessages as any,
     body: {
@@ -146,7 +145,7 @@ export default function Page() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, chatControl]);
 
   return (
     <TooltipProvider>
