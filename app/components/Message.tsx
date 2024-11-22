@@ -11,6 +11,8 @@ import { Icon } from "../Icon";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import "katex/dist/katex.min.css";
+import { Tooltip, TooltipTrigger } from "@radix-ui/react-tooltip";
+import { TooltipContent } from "@/components/ui/tooltip";
 
 const courseChips: any = {
   "AP Physics 1: Algebra-Based": [
@@ -186,6 +188,20 @@ export function Message({
           )}
         </div>
       </div>
+      {message.role === "assistant" && messageIndex > 3 && !message.ad && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              className="px-0 opacity-40"
+              onClick={() => window.open("https://tally.so/r/wo0vvP")}
+            >
+              <Icon>feedback</Icon>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Send feedback</TooltipContent>
+        </Tooltip>
+      )}
     </div>
   );
 }

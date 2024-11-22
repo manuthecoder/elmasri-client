@@ -128,6 +128,14 @@ export function AppMenu({
               <Icon className="mr-2">code</Icon>
               Open source
             </MenubarItem>
+            <MenubarItem
+              onClick={() => {
+                window.open("https://tally.so/r/wo0vvP");
+              }}
+            >
+              <Icon className="mr-2">favorite</Icon>
+              Send feedback
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
 
@@ -178,4 +186,3 @@ export function AppMenu({
     </div>
   );
 }
-
