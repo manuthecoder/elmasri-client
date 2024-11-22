@@ -43,10 +43,7 @@ export function SendMessage({ editor, messages, handleSubmit }: any) {
   }, [editor]);
 
   const value = editor?.storage?.markdown?.getMarkdown?.();
-
-  if (!editor) {
-    return null;
-  }
+  if (!editor) return null;
 
   return (
     <MessageBarContext.Provider value={{ setOpen }}>
