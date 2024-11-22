@@ -19,29 +19,6 @@ export function SendMessage({ editor, messages, handleSubmit }: any) {
     if (editor) setTimeout(() => editor.view.dom.focus(), 100);
   }, [editor]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: any) => {
-      if (
-        editor &&
-        !e.ctrlKey &&
-        !e.altKey &&
-        !e.shiftKey &&
-        e.key !== "Tab" &&
-        !["TEXTAREA", "INPUT"].includes(
-          document?.activeElement?.tagName || "-1"
-        ) &&
-        !document.querySelector("[contenteditable=true]:focus") &&
-        !document.querySelector("textarea:focus") &&
-        !document.querySelector("input:focus")
-      ) {
-        e.preventDefault();
-        editor.view.dom.focus();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [editor]);
-
   const value = editor?.storage?.markdown?.getMarkdown?.();
   if (!editor) return null;
 

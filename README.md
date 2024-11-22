@@ -18,6 +18,8 @@ ElmasriAI offers:
 - ➗ **Formula Support**: ElmasriAI incorporates LaTeX for clear, precise formula representation, so students get used to seeing equations the way they appear on exams, like `$F = ma$`.
 - 🤫 **Spoilers**: Instead of just giving away an answer to a whole physics problem, ElmasriAI will divide the steps into clickable sections so students can reveal steps one-by-one.
 
+- 📲 **PWA**: Add ElmasriAI to your home screen by clicking "Install app!"
+
 ElmasriAI is more than just an assistant; it’s a digital re-creation of Mr. Elmasri’s teaching style, encouraging students to learn independently while also providing the guidance needed for AP Physics success.
 
 ## The technical stuff
@@ -41,4 +43,3 @@ There's a great productivity platform out there called [Dysperse](https://dysper
 - Automatically syncs assignments from Canvas 🔁
 - As seen on the Irvine High's newspaper, El Vaquero! 📰🤠
 - Over 12,000 students rely on this app!
-
