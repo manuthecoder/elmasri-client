@@ -23,7 +23,7 @@ ElmasriAI is more than just an assistant; it’s a digital re-creation of Mr. El
 ## The technical stuff
 
 - Built with [React](https://react.dev) & [Next.JS](nextjs.org), and deployed with [Cloudflare Pages](https://pages.dev) and [Vercel](https://vercel.com)
-- Domain name from [freedns.afraid.org](freedns.afraid.org)
+- Domain name from [freedns.afraid.org](https://freedns.afraid.org)
 - AI Model based on [Gemini 1.5-Flash](https://ai.google.dev/)
 - Frontend UI built with [TailwindCSS](https://tailwindcss.com/) and [ShadCN UI](https://ui.shadcn.com/)
 - Frontend database built using `localStorage`
