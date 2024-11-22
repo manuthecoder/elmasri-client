@@ -145,7 +145,7 @@ export default function Page() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, chatControl]);
+  }, [messages, chatControl?.isLoading, chatControl?.data]);
 
   return (
     <TooltipProvider>
