@@ -1,7 +1,9 @@
 import { Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
-import InlineMathView from "./InlineMathView";
-
+import dynamic from "next/dynamic";
+const InlineMathView = dynamic(() => import("./InlineMathView"), {
+  ssr: false,
+});
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     inlineMath: {
@@ -59,3 +61,4 @@ export default Node.create({
     };
   },
 });
+

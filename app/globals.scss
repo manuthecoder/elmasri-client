@@ -181,7 +181,11 @@ textarea {
   color: black;
   font-family: "Space Grotesk", sans-serif;
 }
-.mq-editable-field, .mq-math-mode .mq-editable-field {
+.dark .inline-math span:empty::before {
+  color: white;
+}
+.mq-editable-field,
+.mq-math-mode .mq-editable-field {
   background-color: rgba(200, 200, 200, 0.3);
   border: none !important;
   border-radius: 10px;
@@ -193,3 +197,60 @@ textarea {
   background-color: #2f7c57;
   color: #fff;
 }
+
+/* Style for <details> element */
+details {
+  border-radius: 8px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+}
+
+details[open] {
+  border-color: rgba(200, 200, 200, 0.2);
+  margin: 10px;
+}
+
+/* Style for <summary> element */
+summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 12px;
+  background-color: rgba(200, 200, 200, 0.3);
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+details[open] > summary {
+  margin: -5px -10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+summary:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+
+summary:focus-visible {
+  outline: 2px solid #3b82f6; /* Blue outline on focus */
+}
+
+/* Adding an arrow icon next to <summary> */
+summary::after {
+  content: " ▼";
+  font-size: 14px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+details[open] summary::after {
+  transform: rotate(180deg); /* Rotates the arrow when open */
+}
+
