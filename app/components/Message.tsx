@@ -168,7 +168,7 @@ export function Message({
                   </span>
                   <p className="m-0">
                     Sorry, I can't provide that information. Please ask me
-                    something else. Error codes:{" "}
+                    something else. Error codes:
                     {message.safetyRatings &&
                       message.safetyRatings
                         .filter(
