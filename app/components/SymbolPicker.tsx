@@ -11,7 +11,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "@/hooks/use-toast";
-
 import { useEffect, useState } from "react";
 import { Icon } from "../Icon";
 
@@ -190,3 +189,4 @@ export function SymbolPicker({ editor }: { editor: any }) {
     </Popover>
   );
 }
+

@@ -7,7 +7,6 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { History } from "./History";
@@ -15,6 +14,7 @@ import { HowWasThisCreated } from "./HowWasThisCreated";
 import { PwaInstaller } from "./PwaInstaller";
 import { WelcomeModal } from "./WelcomeModal";
 import { Icon } from "../Icon";
+import { toast } from "@/hooks/use-toast";
 
 export function AppMenu({
   newChat,
@@ -74,6 +74,26 @@ export function AppMenu({
             <Icon>expand_more</Icon>
           </MenubarTrigger>
           <MenubarContent>
+            <MenubarItem
+              onClick={() => {
+                try {
+                  navigator.share({
+                    title: "ElmasriAI",
+                    text: "Check out ElmasriAI, a free AI tutor for AP Physics!",
+                    url: "https://elmasriai.vercel.app",
+                  });
+                } catch (e) {
+                  navigator.clipboard.writeText("https://elmasriai.vercel.app");
+                  toast({
+                    title: "Link copied to clipboard",
+                    description: "Share this app with your friends!",
+                  });
+                }
+              }}
+            >
+              <Icon className="mr-2">ios_share</Icon>
+              Share this app
+            </MenubarItem>
             <MenubarItem onClick={toggleDarkMode}>
               <Icon className="mr-2">dark_mode</Icon>
               Dark mode
@@ -150,3 +170,4 @@ export function AppMenu({
     </div>
   );
 }
+

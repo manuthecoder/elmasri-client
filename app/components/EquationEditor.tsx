@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-
 import { Icon } from "../Icon";
 
 export function EquationEditor({ editor }: any) {
@@ -24,3 +23,4 @@ export function EquationEditor({ editor }: any) {
     </Button>
   );
 }
+

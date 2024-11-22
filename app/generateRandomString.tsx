@@ -1,4 +1,5 @@
 "use client";
+
 export function generateRandomString(length: number) {
   let result = "";
   const characters =

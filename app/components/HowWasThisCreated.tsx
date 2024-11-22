@@ -8,7 +8,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { MenubarShortcut } from "@/components/ui/menubar";
-
 import { Icon } from "../Icon";
 
 export function HowWasThisCreated({ isMenu }: any) {
@@ -102,3 +101,4 @@ export function HowWasThisCreated({ isMenu }: any) {
     </Dialog>
   );
 }
+

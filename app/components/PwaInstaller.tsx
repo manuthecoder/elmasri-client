@@ -1,5 +1,4 @@
 import { MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
-
 import { usePWAInstall } from "react-use-pwa-install";
 import { Icon } from "../Icon";
 
@@ -20,3 +19,4 @@ export function PwaInstaller() {
     )
   );
 }
+

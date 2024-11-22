@@ -6,7 +6,6 @@ import {
 } from "@radix-ui/react-menubar";
 import { UseChatHelpers } from "ai/react";
 import dayjs from "dayjs";
-
 import { Icon } from "../Icon";
 
 export function History({
@@ -68,3 +67,4 @@ export function History({
     </>
   );
 }
+

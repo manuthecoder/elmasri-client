@@ -5,7 +5,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { EditorContent } from "@tiptap/react";
-
 import { useEffect, useState } from "react";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { SymbolPicker } from "./SymbolPicker";
@@ -110,3 +109,4 @@ export function SendMessage({ editor, messages, handleSubmit }: any) {
     </MessageBarContext.Provider>
   );
 }
+

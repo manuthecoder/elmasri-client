@@ -4,7 +4,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { useState } from "react";
 import { Icon } from "../Icon";
 
@@ -66,3 +65,4 @@ export function SpeechRecognition({
     </Tooltip>
   );
 }
+

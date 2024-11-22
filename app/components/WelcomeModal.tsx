@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { useEffect, useState } from "react";
 import { Icon } from "../Icon";
 
@@ -81,3 +80,4 @@ export function WelcomeModal() {
     </Dialog>
   );
 }
+

@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-
 import Image from "next/image";
 import { Icon } from "../Icon";
 
@@ -38,3 +37,4 @@ export function EmptyContainer() {
     </div>
   );
 }
+
