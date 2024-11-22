@@ -22,7 +22,13 @@ ElmasriAI is more than just an assistant; it’s a digital re-creation of Mr. El
 
 ## The technical stuff
 
-ElmasriAI uses Google's Gemini 1.5-Flash model for the core critical thinking.
+- Built with [React](https://react.dev) & [Next.JS](nextjs.org), and deployed with [Cloudflare Pages](https://pages.dev) and [Vercel](https://vercel.com)
+- Domain name from [freedns.afraid.org](freedns.afraid.org)
+- AI Model based on [Gemini 1.5-Flash](https://ai.google.dev/)
+- Frontend UI built with [TailwindCSS](https://tailwindcss.com/) and [ShadCN UI](https://ui.shadcn.com/)
+- Frontend database built using `localStorage`
+- Text editing built with [TipTap Pro](https://tiptap.dev/) and [MathQuill](http://mathquill.com/) math equation rendering
+- Project management done with [Dysperse](https://dysperse.com)
 
 ---
 
