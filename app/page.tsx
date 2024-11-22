@@ -86,7 +86,7 @@ export default function Page() {
     api:
       process.env.NODE_ENV === "development"
         ? undefined
-        : "https://elmasri.my.to/api/chat",
+        : "https://elmasri-client.vercel.app/api/chat",
   });
 
   const { messages, append, error } = chatControl;
