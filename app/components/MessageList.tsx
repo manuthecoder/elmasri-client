@@ -15,20 +15,33 @@ export function MessageList({
 }) {
   return (
     <div className="flex flex-col flex-1 gap-2">
-      {messages.map((message: any, index: any) => (
-        <Message
-          messageIndex={index}
-          handleSubmit={handleSubmit}
-          chatControl={chatControl}
-          course={course}
-          key={index}
-          message={message}
-          hideUser={
-            index + 1 < messages.length &&
-            messages[index + 1].role === message.role
-          }
-        />
-      ))}
+      {[
+        // insert ad at index 4
+        ...messages.slice(0, 5),
+        ...messages.slice(5, 6),
+        messages.length > 5 &&
+          !chatControl.isLoading && {
+            role: "assistant",
+            content: "This is an ad",
+            ad: true,
+          },
+        ...messages.slice(6),
+      ]
+        .filter((e) => e)
+        .map((message: any, index: any) => (
+          <Message
+            messageIndex={index}
+            handleSubmit={handleSubmit}
+            chatControl={chatControl}
+            course={course}
+            key={index}
+            message={message}
+            hideUser={
+              index + 1 < messages.length &&
+              messages[index + 1].role === message.role
+            }
+          />
+        ))}
       {chatControl.isLoading && (
         <Message
           chatControl={chatControl}
@@ -42,3 +55,4 @@ export function MessageList({
     </div>
   );
 }
+
