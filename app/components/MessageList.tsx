@@ -5,7 +5,6 @@ export function MessageList({
   handleSubmit,
   messages,
   chatControl,
-  sendMessage,
   course,
 }: {
   handleSubmit: any;
@@ -18,12 +17,10 @@ export function MessageList({
     <div className="flex flex-col flex-1 gap-2">
       {messages.map((message: any, index: any) => (
         <Message
-          messages={messages}
           messageIndex={index}
           handleSubmit={handleSubmit}
           chatControl={chatControl}
           course={course}
-          sendMessage={sendMessage}
           key={index}
           message={message}
           hideUser={
@@ -33,7 +30,14 @@ export function MessageList({
         />
       ))}
       {chatControl.isLoading && (
-        <Message message={{ role: "assistant", loading: true, content: "" }} />
+        <Message
+          chatControl={chatControl}
+          course="AP Physics 1"
+          handleSubmit={handleSubmit}
+          hideUser={false}
+          messageIndex={0}
+          message={{ role: "assistant", loading: true, content: "" }}
+        />
       )}
     </div>
   );

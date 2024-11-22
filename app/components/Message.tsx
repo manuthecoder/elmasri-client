@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
 import Image from "next/image";
 import { useState } from "react";
 import Markdown from "react-markdown";
@@ -9,12 +8,13 @@ import remarkMath from "remark-math";
 import { HowWasThisCreated } from "./HowWasThisCreated";
 import { DysperseAd } from "./DysperseAd";
 import { Icon } from "../Icon";
+import rehypeRaw from "rehype-raw";
 
 const courseChips: any = {
   "AP Physics 1: Algebra-Based": [
-    "How to determine the net force in a system?",
-    "What should I know for my circular motion/gravitation test?",
-    "Give me a practice problem involving circular motion & kinematics",
+    "What are we learning in Unit 4?",
+    "What should I know for my work, energy, and power test?",
+    "Give me a practice problem involving energy & kinematics",
   ],
   "AP Physics C: Mechanics": [
     "How do you solve problems involving rotational motion?",
@@ -35,12 +35,19 @@ const courseChips: any = {
 
 export function Message({
   message,
-  sendMessage,
+  chatControl,
   hideUser,
   course,
   messageIndex,
   handleSubmit,
-}: any) {
+}: {
+  message: any;
+  chatControl: any;
+  hideUser: boolean;
+  course: string;
+  messageIndex: number;
+  handleSubmit: any;
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(message.content);
 
@@ -110,7 +117,9 @@ export function Message({
                   key={chip}
                   size="sm"
                   variant="outline"
-                  onClick={() => sendMessage(chip)}
+                  onClick={() =>
+                    chatControl.append({ content: chip, role: "user" })
+                  }
                 >
                   <Icon
                     style={{ fontSize: 20, marginBottom: -2 }}
@@ -147,7 +156,7 @@ export function Message({
               ) : (
                 <Markdown
                   remarkPlugins={[remarkMath]}
-                  rehypePlugins={[rehypeKatex]}
+                  rehypePlugins={[rehypeKatex, rehypeRaw]}
                 >
                   {message.content}
                 </Markdown>

@@ -178,7 +178,7 @@ export default function Page() {
                 handleSubmit={handleSubmit}
                 course={course}
                 chatControl={chatControl}
-                sendMessage={(a: any) => handleSubmit(a)}
+                sendMessage={handleSubmit}
                 messages={messages}
               />
             </div>
