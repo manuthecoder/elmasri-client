@@ -2,7 +2,7 @@ import { NodeViewWrapper } from "@tiptap/react";
 import dynamic from "next/dynamic";
 import { useContext, useEffect, useRef } from "react";
 import { addStyles } from "react-mathquill";
-import { MessageBarContext } from "../MessageBarContext";
+import { MessageBarContext } from "../../MessageBarContext";
 
 const EditableMathField = dynamic(
   () => import("react-mathquill").then((mod) => mod.EditableMathField),
