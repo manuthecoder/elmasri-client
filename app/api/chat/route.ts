@@ -13,7 +13,6 @@ export const OPTIONS = async () => {
 export async function POST(req: NextRequest) {
   // Get message from request body
   const { messages, course } = await req.json();
-
   console.log(messages);
 
   const result = await streamText({

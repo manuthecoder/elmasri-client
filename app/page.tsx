@@ -83,6 +83,9 @@ export default function Page() {
   // const [messages, chatControl] = useState<any>(defaultMessages);
   const chatControl = useChat({
     initialMessages: defaultMessages as any,
+    body: {
+      course,
+    },
   });
 
   const { messages, append, error } = chatControl;
