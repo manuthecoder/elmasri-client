@@ -20,6 +20,10 @@ ElmasriAI offers:
 
 ElmasriAI is more than just an assistant; it’s a digital re-creation of Mr. Elmasri’s teaching style, encouraging students to learn independently while also providing the guidance needed for AP Physics success.
 
+## The technical stuff
+
+ElmasriAI uses Google's Gemini 1.5-Flash model for the core critical thinking.
+
 ---
 
 ### Love this project? Check out [Dysperse](https://click.dysperse.com/qU2SIVR)!
