@@ -13,6 +13,8 @@ import rehypeRaw from "rehype-raw";
 import "katex/dist/katex.min.css";
 import { Tooltip, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { TooltipContent } from "@/components/ui/tooltip";
+import { toast } from "@/hooks/use-toast";
+import dayjs from "dayjs";
 
 const courseChips: any = {
   "AP Physics 1: Algebra-Based": [
@@ -44,6 +46,7 @@ export function Message({
   course,
   messageIndex,
   handleSubmit,
+  hasReachedMessageLimit,
 }: {
   message: any;
   chatControl: any;
@@ -51,6 +54,7 @@ export function Message({
   course: string;
   messageIndex: number;
   handleSubmit: any;
+  hasReachedMessageLimit: any;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(message.content);
@@ -121,9 +125,18 @@ export function Message({
                   key={chip}
                   size="sm"
                   variant="outline"
-                  onClick={() =>
-                    chatControl.append({ content: chip, role: "user" })
-                  }
+                  onClick={() => {
+                    if (hasReachedMessageLimit) {
+                      toast({
+                        title: "Message Limit Exceeded",
+                        description: `Try again after ${dayjs(
+                          localStorage.getItem("messageResetTime")
+                        ).format("h:mm A")}`,
+                      });
+                      return;
+                    }
+                    chatControl.append({ content: chip, role: "user" });
+                  }}
                 >
                   <Icon
                     style={{ fontSize: 20, marginBottom: -2 }}
@@ -205,3 +218,4 @@ export function Message({
     </div>
   );
 }
+

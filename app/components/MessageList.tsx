@@ -6,12 +6,14 @@ export function MessageList({
   messages,
   chatControl,
   course,
+  hasReachedMessageLimit,
 }: {
   handleSubmit: any;
   messages: any;
   chatControl: UseChatHelpers;
   sendMessage: any;
   course: any;
+  hasReachedMessageLimit: any;
 }) {
   return (
     <div className="flex flex-col flex-1 gap-2">
@@ -30,6 +32,7 @@ export function MessageList({
         .filter((e) => e)
         .map((message: any, index: any) => (
           <Message
+            hasReachedMessageLimit={hasReachedMessageLimit}
             messageIndex={index}
             handleSubmit={handleSubmit}
             chatControl={chatControl}

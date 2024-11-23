@@ -215,6 +215,7 @@ export default function Page() {
               <EmptyContainer />
               <div className="flex-1 bg-red-500" />
               <MessageList
+                hasReachedMessageLimit={hasReachedMessageLimit}
                 handleSubmit={handleSubmit}
                 course={course}
                 chatControl={chatControl}
