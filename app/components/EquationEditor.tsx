@@ -9,7 +9,7 @@ export function EquationEditor({ editor }: any) {
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
-          className="bg-gray-100 dark:bg-neutral-800 px-2 text-black dark:text-white"
+          className="bg-gray-100 dark:bg-neutral-800 px-1 sm:px-2 text-black dark:text-white"
           variant="ghost"
           id="functionsTrigger"
           onClick={() => {

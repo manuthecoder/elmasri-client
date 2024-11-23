@@ -3,7 +3,6 @@ import { Analytics } from "@vercel/analytics/react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import "./globals.scss";
 import "./typing.css";
 dayjs.extend(relativeTime);

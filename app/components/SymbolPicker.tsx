@@ -99,7 +99,7 @@ export function SymbolPicker({ editor }: { editor: any }) {
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
             <Button
-              className="bg-gray-100 px-2 text-black dark:text-white dark:bg-neutral-800"
+              className="bg-gray-100 px-1 sm:px-2 text-black dark:text-white dark:bg-neutral-800"
               variant="ghost"
               id="symbolsTrigger"
               onClick={() => {

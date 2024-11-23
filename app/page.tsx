@@ -181,7 +181,7 @@ export default function Page() {
         }}
       >
         <div
-          className="w-full max-w-4xl flex flex-col h-dvh p-5"
+          className="w-full max-w-4xl flex flex-col h-dvh p-2 sm:p-5"
           style={{
             ["WebkitAppRegion" as any]: "no-drag",
           }}

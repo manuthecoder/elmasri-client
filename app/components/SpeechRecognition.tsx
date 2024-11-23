@@ -54,7 +54,7 @@ export function SpeechRecognition({
             isListening
               ? "bg-red-500 hover:bg-red-500 text-white"
               : "bg-gray-100 text-black dark:text-white dark:bg-neutral-800"
-          } px-2`}
+          } px-1 sm:px-2`}
           onClick={handleClick}
           variant="ghost"
         >

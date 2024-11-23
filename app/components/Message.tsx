@@ -234,37 +234,39 @@ export function Message({
           )}
         </div>
       </div>
-      {message.role === "assistant" && messageIndex > 3 && !message.ad && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              className="px-0 opacity-40"
-              onClick={() => window.open("https://tally.so/r/wo0vvP")}
-            >
-              <Icon>feedback</Icon>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Send feedback</TooltipContent>
-        </Tooltip>
-      )}
-      {message.role === "assistant" &&
-        messageIndex > 3 &&
-        !message.ad &&
-        !hasReachedMessageLimit && (
+      <div className="flex flex-col sm:flex-row">
+        {message.role === "assistant" && messageIndex > 3 && !message.ad && (
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 variant="ghost"
                 className="px-0 opacity-40"
-                onClick={() => chatControl.reload()}
+                onClick={() => window.open("https://tally.so/r/wo0vvP")}
               >
-                <Icon>refresh</Icon>
+                <Icon>feedback</Icon>
               </Button>
             </TooltipTrigger>
             <TooltipContent>Send feedback</TooltipContent>
           </Tooltip>
         )}
+        {message.role === "assistant" &&
+          messageIndex > 3 &&
+          !message.ad &&
+          !hasReachedMessageLimit && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="px-0 opacity-40"
+                  onClick={() => chatControl.reload()}
+                >
+                  <Icon>refresh</Icon>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Send feedback</TooltipContent>
+            </Tooltip>
+          )}
+      </div>
     </div>
   );
 }

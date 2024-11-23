@@ -93,7 +93,7 @@ export function SendMessage({
         </Popover>
         <Button
           style={{ height: 38 }}
-          className="px-2 sm:px-4"
+          className="px-1 sm:px-4"
           onClick={() => handleSubmit(value)}
           disabled={
             chatControl?.isLoading ||
@@ -102,7 +102,9 @@ export function SendMessage({
           }
         >
           <span className="hidden sm:visible">Send</span>
-          <Icon>send</Icon>
+          <Icon style={{ fontVariationSettings: "'wght' 400" }}>
+            arrow_upward
+          </Icon>
         </Button>
       </div>
     </MessageBarContext.Provider>
