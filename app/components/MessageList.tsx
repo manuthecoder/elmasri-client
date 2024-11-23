@@ -47,6 +47,7 @@ export function MessageList({
         ))}
       {chatControl.isLoading && (
         <Message
+          hasReachedMessageLimit={hasReachedMessageLimit}
           chatControl={chatControl}
           course="AP Physics 1"
           handleSubmit={handleSubmit}

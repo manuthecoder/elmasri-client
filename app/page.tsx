@@ -153,9 +153,10 @@ export default function Page() {
       });
       return;
     }
-    setMessageCount(messageCount + 1);
-    localStorage.setItem("messageCount", (messageCount + 1 + "").toString());
-
+    if (process.env.NODE_ENV !== "development") {
+      setMessageCount(messageCount + 1);
+      localStorage.setItem("messageCount", (messageCount + 1 + "").toString());
+    }
     if (
       !localStorage.getItem("messageResetTime") ||
       dayjs().isAfter(localStorage.getItem("messageResetTime"))
