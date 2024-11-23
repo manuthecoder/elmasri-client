@@ -201,6 +201,7 @@ export default function Page() {
         >
           <AppMenu
             course={course}
+            hasReachedMessageLimit={hasReachedMessageLimit}
             setCourse={setCourse}
             newChat={newChat}
             conversationId={conversationId}

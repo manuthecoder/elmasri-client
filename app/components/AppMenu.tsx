@@ -23,6 +23,7 @@ export function AppMenu({
   conversationId,
   setConversationId,
   chatControl,
+  hasReachedMessageLimit,
 }: any) {
   const [darkMode, setDarkMode] = useState(false);
 
@@ -104,21 +105,23 @@ export function AppMenu({
               setConversationId={setConversationId}
               chatControl={chatControl}
             />
-            <MenubarItem
-              onClick={() => {
-                if (
-                  confirm(
-                    "Are you sure you want to clear chat history and stored data?"
-                  )
-                ) {
-                  localStorage.clear();
-                  window.location.reload();
-                }
-              }}
-            >
-              <Icon className="mr-2">delete</Icon>
-              Permanently delete my data
-            </MenubarItem>
+            {!hasReachedMessageLimit && (
+              <MenubarItem
+                onClick={() => {
+                  if (
+                    confirm(
+                      "Are you sure you want to clear chat history and stored data?"
+                    )
+                  ) {
+                    localStorage.clear();
+                    window.location.reload();
+                  }
+                }}
+              >
+                <Icon className="mr-2">delete</Icon>
+                Permanently delete my data
+              </MenubarItem>
+            )}
             <MenubarItem
               onClick={() =>
                 window.open("https://github.com/manuthecoder/elmasri-client")
