@@ -85,7 +85,10 @@ export function Message({
         <Button
           variant="ghost"
           className="px-0 opacity-40"
-          onClick={() => setIsEditing(true)}
+          onClick={() => {
+            setIsEditing(true);
+            setEditedContent(message.content);
+          }}
         >
           <Icon>edit</Icon>
         </Button>
@@ -94,7 +97,7 @@ export function Message({
         className={
           `bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg prose prose-neutral ` +
           (message.role === "user"
-            ? "prose-invert text-green-100"
+            ? "prose-invert text-green-100 selection:bg-green-200 selection:text-green-900"
             : "dark:prose-invert")
         }
         style={
@@ -158,17 +161,39 @@ export function Message({
                   <Textarea
                     value={editedContent}
                     autoFocus
+                    style={{ height: 200, borderColor: "#fff" }}
                     onChange={(e) => setEditedContent(e.target.value)}
                   />
-                  <Button
-                    className="w-full"
-                    onClick={() => {
-                      setIsEditing(false);
-                      handleSubmit(editedContent, messageIndex, editedContent);
-                    }}
-                  >
-                    Save
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      className="w-full"
+                      variant="ghost"
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "#fff",
+                        background: "transparent",
+                      }}
+                      onClick={() => setIsEditing(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      className="w-full"
+                      onClick={() => {
+                        setIsEditing(false);
+                        chatControl.setMessages(
+                          chatControl.messages.map((m: any, i: number) =>
+                            i === messageIndex - 1
+                              ? { ...m, content: editedContent }
+                              : m
+                          )
+                        );
+                        chatControl.reload();
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <Markdown

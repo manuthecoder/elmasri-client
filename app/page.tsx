@@ -139,11 +139,7 @@ export default function Page() {
     localStorage.getItem("messageResetTime") &&
     dayjs().isBefore(localStorage.getItem("messageResetTime"));
 
-  const handleSubmit = async (
-    a: string,
-    messageIndex?: any,
-    newData?: string
-  ) => {
+  const handleSubmit = async (a: string) => {
     if (hasReachedMessageLimit) {
       toast({
         title: "Message Limit Exceeded",
@@ -168,17 +164,7 @@ export default function Page() {
     }
 
     if (!value.trim() && !a) return;
-    if (messageIndex && newData) {
-      const updatedMessages = [...messages];
-      updatedMessages[messageIndex] = {
-        ...updatedMessages[messageIndex],
-        content: newData,
-      };
-      chatControl.setMessages(updatedMessages);
-      chatControl.reload();
-    } else {
-      append({ content: value, role: "user" });
-    }
+    append({ content: value, role: "user" });
     editor?.commands.setContent("");
   };
 
