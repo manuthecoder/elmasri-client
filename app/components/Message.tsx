@@ -81,18 +81,21 @@ export function Message({
           )}
         </div>
       )}
-      {message.role === "user" && !message.chips && !isEditing && (
-        <Button
-          variant="ghost"
-          className="px-0 opacity-40"
-          onClick={() => {
-            setIsEditing(true);
-            setEditedContent(message.content);
-          }}
-        >
-          <Icon>edit</Icon>
-        </Button>
-      )}
+      {message.role === "user" &&
+        !message.chips &&
+        !isEditing &&
+        !hasReachedMessageLimit && (
+          <Button
+            variant="ghost"
+            className="px-0 opacity-40"
+            onClick={() => {
+              setIsEditing(true);
+              setEditedContent(message.content);
+            }}
+          >
+            <Icon>edit</Icon>
+          </Button>
+        )}
       <div
         className={
           `bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 py-2 max-w-lg prose prose-neutral ` +
