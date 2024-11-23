@@ -25,7 +25,7 @@ export function History({
           Chat history
           <Icon className="ml-auto">arrow_forward_ios</Icon>
         </MenubarSubTrigger>
-        <MenubarSubContent className="shadow-lg bg-white dark:bg-neutral-950 border rounded w-52 p-1">
+        <MenubarSubContent className="shadow-lg bg-white dark:bg-neutral-950 border rounded w-52 p-1 max-h-52 overflow-y-auto">
           <MenubarItem
             className="gap-1"
             onClick={() => {

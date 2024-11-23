@@ -119,7 +119,6 @@ export function AppMenu({
               <Icon className="mr-2">delete</Icon>
               Permanently delete my data
             </MenubarItem>
-            <HowWasThisCreated isMenu />
             <MenubarItem
               onClick={() => {
                 window.open("https://github.com/manuthecoder/elmasri-client");
@@ -186,3 +185,4 @@ export function AppMenu({
     </div>
   );
 }
+
