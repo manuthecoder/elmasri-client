@@ -24,7 +24,6 @@ dayjs.extend(relativeTime);
 
 export default function Page() {
   const editor = useEditor({
-    // immediatelyRender: true,
     extensions: [
       StarterKit,
       Mathematics,
@@ -55,7 +54,6 @@ export default function Page() {
     },
   });
 
-  const value = editor?.storage?.markdown?.getMarkdown?.();
   const scrollRef: any = useRef();
   const [course, setCourse] = useState<any>("AP Physics 1: Algebra-Based");
 
@@ -163,6 +161,7 @@ export default function Page() {
       );
     }
 
+    const value = editor?.storage?.markdown?.getMarkdown?.();
     if (!value.trim() && !a) return;
     append({ content: value, role: "user" });
     editor?.commands.setContent("");
