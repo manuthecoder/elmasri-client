@@ -85,16 +85,21 @@ export function Message({
         !message.chips &&
         !isEditing &&
         !hasReachedMessageLimit && (
-          <Button
-            variant="ghost"
-            className="px-0 opacity-40"
-            onClick={() => {
-              setIsEditing(true);
-              setEditedContent(message.content);
-            }}
-          >
-            <Icon>edit</Icon>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                className="px-0 opacity-40"
+                onClick={() => {
+                  setIsEditing(true);
+                  setEditedContent(message.content);
+                }}
+              >
+                <Icon>edit</Icon>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Edit</TooltipContent>
+          </Tooltip>
         )}
       <div
         className={
@@ -243,6 +248,23 @@ export function Message({
           <TooltipContent>Send feedback</TooltipContent>
         </Tooltip>
       )}
+      {message.role === "assistant" &&
+        messageIndex > 3 &&
+        !message.ad &&
+        !hasReachedMessageLimit && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                className="px-0 opacity-40"
+                onClick={() => chatControl.reload()}
+              >
+                <Icon>refresh</Icon>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Send feedback</TooltipContent>
+          </Tooltip>
+        )}
     </div>
   );
 }
