@@ -17,6 +17,8 @@ import { MessageList } from "./components/MessageList";
 import { SendMessage } from "./components/SendMessage";
 import InlineMath from "./components/TextEditor/InlineMath";
 import { generateRandomString } from "./generateRandomString";
+import { toast } from "@/hooks/use-toast";
+import { LimitReached } from "./components/LimitReached";
 
 dayjs.extend(relativeTime);
 
@@ -126,11 +128,44 @@ export default function Page() {
     chatControl.setMessages(defaultMessages as any);
   };
 
+  const [messageCount, setMessageCount] = useState(0);
+
+  useEffect(() => {
+    setMessageCount(parseInt(localStorage.getItem("messageCount") || "0"));
+  }, []);
+
+  const hasReachedMessageLimit =
+    messageCount > 10 &&
+    localStorage.getItem("messageResetTime") &&
+    dayjs().isBefore(localStorage.getItem("messageResetTime"));
+
   const handleSubmit = async (
     a: string,
     messageIndex?: any,
     newData?: string
   ) => {
+    if (hasReachedMessageLimit) {
+      toast({
+        title: "Message Limit Exceeded",
+        description: `Try again after ${dayjs(
+          localStorage.getItem("messageResetTime")
+        ).format("h:mm A")}`,
+      });
+      return;
+    }
+    setMessageCount(messageCount + 1);
+    localStorage.setItem("messageCount", (messageCount + 1 + "").toString());
+
+    if (
+      !localStorage.getItem("messageResetTime") ||
+      dayjs().isAfter(localStorage.getItem("messageResetTime"))
+    ) {
+      localStorage.setItem(
+        "messageResetTime",
+        dayjs().add(2, "hour").toISOString()
+      );
+    }
+
     if (!value.trim() && !a) return;
     if (messageIndex && newData) {
       const updatedMessages = [...messages];
@@ -189,11 +224,16 @@ export default function Page() {
             </div>
           </div>
           {error && <ErrorComponent />}
-          <SendMessage
-            editor={editor}
-            messages={messages}
-            handleSubmit={handleSubmit}
-          />
+          {hasReachedMessageLimit && <LimitReached />}
+          {!hasReachedMessageLimit && (
+            <SendMessage
+              chatControl={chatControl}
+              messageCount={messageCount}
+              editor={editor}
+              messages={messages}
+              handleSubmit={handleSubmit}
+            />
+          )}
         </div>
       </div>
     </TooltipProvider>

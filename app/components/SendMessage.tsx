@@ -6,14 +6,19 @@ import {
 } from "@/components/ui/popover";
 import { EditorContent } from "@tiptap/react";
 import { useEffect, useState } from "react";
-import { SpeechRecognition } from "./SpeechRecognition";
-import { SymbolPicker } from "./SymbolPicker";
+import Turnstile from "react-turnstile";
 import { Icon } from "../Icon";
 import { MessageBarContext } from "../MessageBarContext";
 import { EquationEditor } from "./EquationEditor";
-import Turnstile, { useTurnstile } from "react-turnstile";
+import { SpeechRecognition } from "./SpeechRecognition";
+import { SymbolPicker } from "./SymbolPicker";
 
-export function SendMessage({ editor, messages, handleSubmit }: any) {
+export function SendMessage({
+  editor,
+  messages,
+  handleSubmit,
+  chatControl,
+}: any) {
   const [open, setOpen] = useState(false);
   const [verified, setVerified] = useState(false);
 
@@ -91,7 +96,9 @@ export function SendMessage({ editor, messages, handleSubmit }: any) {
           className="px-2 sm:px-4"
           onClick={() => handleSubmit(value)}
           disabled={
-            Boolean(messages.find((t: any) => t.loading)) || !value?.trim()
+            chatControl?.isLoading ||
+            Boolean(messages.find((t: any) => t.loading)) ||
+            !value?.trim()
           }
         >
           <span className="hidden sm:visible">Send</span>
@@ -101,3 +108,4 @@ export function SendMessage({ editor, messages, handleSubmit }: any) {
     </MessageBarContext.Provider>
   );
 }
+

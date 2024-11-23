@@ -30,3 +30,4 @@ export function EquationEditor({ editor }: any) {
     </Tooltip>
   );
 }
+
