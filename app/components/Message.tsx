@@ -183,7 +183,7 @@ export function Message({
                         setIsEditing(false);
                         chatControl.setMessages(
                           chatControl.messages.map((m: any, i: number) =>
-                            i === messageIndex - 1
+                            i === messageIndex
                               ? { ...m, content: editedContent }
                               : m
                           )

@@ -33,7 +33,9 @@ export function MessageList({
         .map((message: any, index: any) => (
           <Message
             hasReachedMessageLimit={hasReachedMessageLimit}
-            messageIndex={index}
+            messageIndex={
+              index - (messages.length > 5 && !chatControl.isLoading ? 1 : 0)
+            }
             handleSubmit={handleSubmit}
             chatControl={chatControl}
             course={course}
