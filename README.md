@@ -23,6 +23,12 @@ ElmasriAI offers:
 
 ElmasriAI is more than just an assistant; it’s a digital re-creation of Mr. Elmasri’s teaching style, encouraging students to learn independently while also providing the guidance needed for AP Physics success.
 
+## Screenshots
+![image](https://github.com/user-attachments/assets/52d86ff9-8619-4045-9da6-8690262105b8)
+![image](https://github.com/user-attachments/assets/5b240436-982e-43b9-8a79-1bcc56d145dc)
+![image](https://github.com/user-attachments/assets/00306062-6324-4316-a9f9-3e36fcc1b181)
+![image](https://github.com/user-attachments/assets/9a86cb33-c196-468a-a158-ebcf2ef75ed0)
+
 ## The technical stuff
 
 - Built with [React](https://react.dev) & [Next.JS](nextjs.org), and deployed with [Cloudflare Pages](https://pages.dev) and [Vercel](https://vercel.com)
