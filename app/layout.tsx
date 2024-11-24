@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import type { Metadata, Viewport } from "next";
 import "./globals.scss";
 import "./typing.css";
+
 dayjs.extend(relativeTime);
 
 const APP_NAME = "ElmasriAI";
