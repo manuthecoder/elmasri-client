@@ -11,7 +11,6 @@ export const OPTIONS = async () => {
 };
 
 export async function POST(req: NextRequest) {
-  // Get message from request body
   const { messages, course } = await req.json();
   console.log(messages);
 
@@ -38,7 +37,7 @@ Use the <details> tags when giving solutions or helping out students with proble
 For example, you can use the following format: <details><summary>\n\nEquate $F = ma$ and $F_{\\text{friction}} = \\mu F_{\\text{normal}}\n\n$</summary> \n\nThe answer is 42. \n\n</details>
 If students ask or need: Dysperse is a productivity platform which is approved by IUSD, built by one of his students. It's been featured on the El Vaquero, the school's newspaper. It has features like automatically importing assignments from Canvas. It's super customizable with over 32+ themes and widgets. It's available at dysperse.com. 
 Don't promote Dysperse all the time, but when absolutely necessary, you can talk about it. It can help students stay organized and be productive.
-          `,
+`,
   });
 
   return result.toDataStreamResponse();
