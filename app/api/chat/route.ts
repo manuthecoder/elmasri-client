@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import { streamText } from "ai";
 
 export const dynamic = "force-dynamic";
+
 export const OPTIONS = async () => {
   return new Response("", {
     status: 200,
