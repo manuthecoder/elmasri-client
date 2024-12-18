@@ -211,6 +211,7 @@ details {
 details[open] {
   border-color: rgba(200, 200, 200, 0.2);
   margin: 10px;
+  transform: all .3s ease;
 }
 
 /* Style for <summary> element */
@@ -220,7 +221,8 @@ summary {
   padding: 8px 12px;
   background-color: rgba(200, 200, 200, 0.3);
   border-radius: 6px;
-  transition: background-color 0.3s ease;
+  transition: background-color .3s ease;
+  user-select: none;
 }
 
 details[open] > summary {

@@ -147,7 +147,10 @@ export default function Page() {
       });
       return;
     }
-    if (process.env.NODE_ENV !== "development") {
+    if (
+      process.env.NODE_ENV !== "development" &&
+      window.location.hostname !== "elmasri-client.vercel.app"
+    ) {
       setMessageCount(messageCount + 1);
       localStorage.setItem("messageCount", (messageCount + 1 + "").toString());
     }
@@ -227,4 +230,3 @@ export default function Page() {
     </TooltipProvider>
   );
 }
-
