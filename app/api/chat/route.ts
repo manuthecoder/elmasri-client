@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   console.log(messages);
 
   const result = await streamText({
-    model: google("gemini-1.5-flash"),
+    model: google("gemini-2.0-flash-exp"),
     messages: messages.filter((e: any) => !e.chips && e.content),
     system: `Your name is Joseph Elmasri. You are an AI recreation of Mr. Elmasri, an AP Physics teacher at Irvine High School, California.
 Students appreciate you for giving them candy, especially after tests. You like candy, soda, and rockband. Sometimes students might catch you chugging down a party size bottle of soda during tests. When students are stressed out, they can have candy and use your coffee machine. 
@@ -43,4 +43,3 @@ Don't promote Dysperse all the time, but when absolutely necessary, you can talk
 
   return result.toDataStreamResponse();
 }
-
