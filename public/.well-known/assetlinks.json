@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "to.my.elmasri.twa",
+      "sha256_cert_fingerprints": [
+        "7C:07:05:5A:CD:A1:90:FC:F9:61:80:7C:F8:76:C5:B4:6C:03:D9:93:55:60:9C:3D:28:30:2E:68:E3:22:3C:2C"
+      ]
+    }
+  }
+]
