@@ -8,16 +8,27 @@ module.exports = withSentryConfig(
   withPWA({
     async redirects() {
       return [
-        process.env.NODE_ENV === "production" && {
+        {
           source: "/:slug*",
           has: [
             {
               type: "host",
-              value: "^(?!elmasri\\.bymanu\\.me$).*$",
+              value: "elmasri.my.to",
             },
           ],
           destination: "https://elmasri.bymanu.me/:slug*",
-          permanent: false,
+          permanent: true,
+        },
+        {
+          source: "/:slug*",
+          has: [
+            {
+              type: "host",
+              value: "elmasri.fr.to",
+            },
+          ],
+          destination: "https://elmasri.bymanu.me/:slug*",
+          permanent: true,
         },
       ].filter(Boolean);
     },
