@@ -30,7 +30,7 @@ module.exports = withSentryConfig(
           destination: "https://elmasri.bymanu.me/:slug*",
           permanent: true,
         },
-      ].filter(Boolean);
+      ];
     },
     async headers() {
       return [
