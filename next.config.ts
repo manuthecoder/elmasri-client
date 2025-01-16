@@ -10,6 +10,12 @@ module.exports = withSentryConfig(
       return [
         process.env.NODE_ENV === "production" && {
           source: "/:slug*",
+          has: [
+            {
+              type: "host",
+              value: "^(?!elmasri\\.bymanu\\.me$).*$",
+            },
+          ],
           destination: "https://elmasri.bymanu.me/:slug*",
           permanent: false,
         },
