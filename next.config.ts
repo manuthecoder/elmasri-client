@@ -6,6 +6,15 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 
 module.exports = withSentryConfig(
   withPWA({
+    async redirects() {
+      return [
+        process.env.NODE_ENV === "production" && {
+          source: "/:slug*",
+          destination: "https://elmasri.bymanu.me/:slug*",
+          permanent: false,
+        },
+      ].filter(Boolean);
+    },
     async headers() {
       return [
         {
